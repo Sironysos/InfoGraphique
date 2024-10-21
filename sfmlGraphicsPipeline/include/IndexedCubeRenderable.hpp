@@ -5,11 +5,11 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-class CubeRenderable : public Renderable
+class IndexedCubeRenderable : public Renderable
 {
     public:
-        ~CubeRenderable();
-        CubeRenderable( ShaderProgramPtr program );
+        ~IndexedCubeRenderable();
+        IndexedCubeRenderable( ShaderProgramPtr program );
 
     private:
         void do_draw();
@@ -21,6 +21,6 @@ class CubeRenderable : public Renderable
 
 };
 
-typedef std::shared_ptr<CubeRenderable> CubeRenderablePtr;
+typedef std::shared_ptr<IndexedCubeRenderable> IndexedCubeRenderablePtr;
 
 #endif

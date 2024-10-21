@@ -1,4 +1,4 @@
-#include "./../include/CubeRenderable.hpp"
+#include "./../include/IndexedCubeRenderable.hpp"
 #include "./../include/gl_helper.hpp"
 #include "./../include/log.hpp"
 #include "./../include/Utils.hpp"
@@ -6,98 +6,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 
-CubeRenderable::CubeRenderable(ShaderProgramPtr shaderProgram)
+IndexedCubeRenderable::IndexedCubeRenderable(ShaderProgramPtr shaderProgram)
 	: Renderable(shaderProgram), m_vBuffer(0), m_cBuffer(0)
 {
 	// Build the geometry : On cree les 12 triangles formant les 6 faces du cube
 	m_positions = {
-		//face 1
-		glm::vec3(-1, -1, 1),
-		glm::vec3(1, -1, 1),
-		glm::vec3(1, 1, 1),
-
-		glm::vec3(-1, -1, 1),
-		glm::vec3(1, 1, 1),
-		glm::vec3(-1, 1, 1),
-		//face 2
-		glm::vec3(-1, -1, -1),
-		glm::vec3(1, -1, -1),
-		glm::vec3(1, 1, -1),
-		
-		glm::vec3(-1, -1, -1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(-1, 1, -1),
-		//face 3
-		glm::vec3(-1, -1, 1),
-		glm::vec3(-1, -1, -1),
-		glm::vec3(1, -1, -1),
-		
-		glm::vec3(-1, -1, 1),
-		glm::vec3(1, -1, -1),
-		glm::vec3(1, -1, 1),
-		//face 4
-		glm::vec3(1, -1, -1),
-		glm::vec3(1, -1, 1),
-		glm::vec3(1, 1, -1),
-		
-		glm::vec3(1, -1, 1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(1, 1, 1),
-		//face 5
-		glm::vec3(-1, -1, -1),
-		glm::vec3(-1, -1, 1),
-		glm::vec3(-1, 1, -1),
-		
-		glm::vec3(-1, -1, 1),
-		glm::vec3(-1, 1, -1),
-		glm::vec3(-1, 1, 1),
-		//face 6
-		glm::vec3(-1, 1, 1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(1, 1, 1),
-		
-		glm::vec3(-1, 1, 1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(-1, 1, -1),
+		//TODO
 	};
 
 	m_colors = {
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(1, 0, 0, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
-		glm::vec4(0, 0, 1, 1),
+		//TODO
 	};
 
 	// Set the model matrix to identity
@@ -115,7 +33,7 @@ CubeRenderable::CubeRenderable(ShaderProgramPtr shaderProgram)
 	glBufferData(GL_ARRAY_BUFFER, m_colors.size() * sizeof(glm::vec4), m_colors.data(), GL_STATIC_DRAW);
 }
 
-void CubeRenderable::do_draw()
+void IndexedCubeRenderable::do_draw()
 {
 	// Get the identifier ( location ) of the uniform modelMat in the shader program
 	int modelLocation = m_shaderProgram->getUniformLocation("modelMat");
@@ -145,7 +63,7 @@ void CubeRenderable::do_draw()
 	glDisableVertexAttribArray(colorLocation);
 }
 
-CubeRenderable::~CubeRenderable()
+IndexedCubeRenderable::~IndexedCubeRenderable()
 {
 	glcheck(glDeleteBuffers(1, &m_vBuffer));
 	glcheck(glDeleteBuffers(1, &m_cBuffer));
