@@ -33,8 +33,9 @@ int main(int argc, char *argv[])
 	viewer.addShaderProgram(flatShader);
 
 	CubeRenderablePtr cube = std::make_shared<CubeRenderable>(flatShader);
-	// IndexedCubeRenderablePtr cube = std::make_shared<IndexedCubeRenderable>(flatShader);
+	IndexedCubeRenderablePtr cube2 = std::make_shared<IndexedCubeRenderable>(flatShader);
 	viewer.addRenderable(cube);
+	viewer.addRenderable(cube2);
 
 	// Shader program instantiation
 	// ...
@@ -42,6 +43,12 @@ int main(int argc, char *argv[])
 	// you must specify the shader program used to draw it .
 	FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
 	viewer.addRenderable(frame);
+
+	cube->Renderable::setModelMatrix(glm::translate(glm::mat4(1.0), glm::vec3(0.0, 0.0, -5.0)));
+	cube2->Renderable::setModelMatrix(glm::translate(glm::mat4(1.0), glm::vec3(0.0, 0.0, 5.0)));
+
+	cube->Renderable::setModelMatrix(glm::rotate(cube->Renderable::getModelMatrix(), 45.0f, glm::vec3(1.0, 0.0, 0.0)));
+	cube2->Renderable::setModelMatrix(glm::scale(cube2->Renderable::getModelMatrix(), glm::vec3(2.0, 2.0, 2.0)));
 
 	// Stage 3: Our program loop
 	while (viewer.isRunning())
