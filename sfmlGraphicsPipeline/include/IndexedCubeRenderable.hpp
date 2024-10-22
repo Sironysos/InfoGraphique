@@ -1,5 +1,5 @@
-#ifndef CUBE_RENDERABLE_HPP
-#define CUBE_RENDERABLE_HPP
+#ifndef INDEXED_CUBE_RENDERABLE_HPP
+#define INDEXED_CUBE_RENDERABLE_HPP
 
 #include "Renderable.hpp"
 #include <vector>
@@ -16,8 +16,11 @@ class IndexedCubeRenderable : public Renderable
 
         std::vector< glm::vec3 > m_positions;
         std::vector< glm::vec4 > m_colors;
+        std::vector< unsigned int > m_indices;
+
         unsigned int m_vBuffer;
         unsigned int m_cBuffer;
+        unsigned int m_iBuffer;
 
 };
 

@@ -12,53 +12,23 @@ CubeRenderable::CubeRenderable(ShaderProgramPtr shaderProgram)
 	// Build the geometry : On cree les 12 triangles formant les 6 faces du cube
 	m_positions = {
 		//face 1
-		glm::vec3(-1, -1, 1),
-		glm::vec3(1, -1, 1),
-		glm::vec3(1, 1, 1),
-
-		glm::vec3(-1, -1, 1),
-		glm::vec3(1, 1, 1),
-		glm::vec3(-1, 1, 1),
+		glm::vec3(-1, -1, 1), glm::vec3(1, -1, 1), glm::vec3(1, 1, 1),
+		glm::vec3(-1, -1, 1), glm::vec3(1, 1, 1), glm::vec3(-1, 1, 1),
 		//face 2
-		glm::vec3(-1, -1, -1),
-		glm::vec3(1, -1, -1),
-		glm::vec3(1, 1, -1),
-		
-		glm::vec3(-1, -1, -1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(-1, 1, -1),
+		glm::vec3(-1, -1, -1), glm::vec3(1, -1, -1), glm::vec3(1, 1, -1),
+		glm::vec3(-1, -1, -1), glm::vec3(1, 1, -1), glm::vec3(-1, 1, -1),
 		//face 3
-		glm::vec3(-1, -1, 1),
-		glm::vec3(-1, -1, -1),
-		glm::vec3(1, -1, -1),
-		
-		glm::vec3(-1, -1, 1),
-		glm::vec3(1, -1, -1),
-		glm::vec3(1, -1, 1),
+		glm::vec3(-1, -1, 1), glm::vec3(-1, -1, -1), glm::vec3(1, -1, -1),
+		glm::vec3(-1, -1, 1), glm::vec3(1, -1, -1), glm::vec3(1, -1, 1),
 		//face 4
-		glm::vec3(1, -1, -1),
-		glm::vec3(1, -1, 1),
-		glm::vec3(1, 1, -1),
-		
-		glm::vec3(1, -1, 1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(1, 1, 1),
+		glm::vec3(1, -1, -1), glm::vec3(1, -1, 1), glm::vec3(1, 1, -1),
+		glm::vec3(1, -1, 1), glm::vec3(1, 1, -1), glm::vec3(1, 1, 1),
 		//face 5
-		glm::vec3(-1, -1, -1),
-		glm::vec3(-1, -1, 1),
-		glm::vec3(-1, 1, -1),
-		
-		glm::vec3(-1, -1, 1),
-		glm::vec3(-1, 1, -1),
-		glm::vec3(-1, 1, 1),
+		glm::vec3(-1, -1, -1), glm::vec3(-1, -1, 1), glm::vec3(-1, 1, -1),
+		glm::vec3(-1, -1, 1), glm::vec3(-1, 1, -1), glm::vec3(-1, 1, 1),
 		//face 6
-		glm::vec3(-1, 1, 1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(1, 1, 1),
-		
-		glm::vec3(-1, 1, 1),
-		glm::vec3(1, 1, -1),
-		glm::vec3(-1, 1, -1),
+		glm::vec3(-1, 1, 1), glm::vec3(1, 1, -1), glm::vec3(1, 1, 1),
+		glm::vec3(-1, 1, 1), glm::vec3(1, 1, -1), glm::vec3(-1, 1, -1),
 	};
 
 	m_colors = {

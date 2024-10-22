@@ -3,6 +3,7 @@
 #include "./../include/ShaderProgram.hpp"
 #include "./../include/FrameRenderable.hpp"
 #include "./../include/CubeRenderable.hpp"
+#include "./../include/IndexedCubeRenderable.hpp"
 
 #define SCR_WIDTH 1024
 #define SCR_HEIGHT 768
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
 	viewer.addShaderProgram(flatShader);
 
 	CubeRenderablePtr cube = std::make_shared<CubeRenderable>(flatShader);
+	// IndexedCubeRenderablePtr cube = std::make_shared<IndexedCubeRenderable>(flatShader);
 	viewer.addRenderable(cube);
 
 	// Shader program instantiation
