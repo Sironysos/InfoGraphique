@@ -14,7 +14,7 @@ MeshRenderable::MeshRenderable(ShaderProgramPtr program,
     m_pBuffer(0), m_cBuffer(0), m_nBuffer(0), m_iBuffer(0), m_mode(GL_TRIANGLES), m_indexed(true)
 {
     // TODO: 
-    // use read_obj from Io.hpp to populate m_positions, m_indices, m_normals and m_tcoords
+    read_obj(mesh_filename, m_positions, m_indices, m_normals, m_tcoords);
     set_random_colors();
     gen_buffers();
     update_buffers();
@@ -171,7 +171,7 @@ MeshRenderable::~MeshRenderable()
     glcheck(glDeleteBuffers(1, &m_nBuffer));
     glcheck(glDeleteBuffers(1, &m_iBuffer));
 }
-/*
+/* 
 #include "./../include/MeshRenderable.hpp"
 #include "./../include/gl_helper.hpp"
 #include "./../include/log.hpp"
@@ -187,7 +187,7 @@ MeshRenderable::MeshRenderable(ShaderProgramPtr program,
     KeyframedHierarchicalRenderable(program),
     m_pBuffer(0), m_cBuffer(0), m_nBuffer(0), m_iBuffer(0), m_mode(GL_TRIANGLES), m_indexed(true)
 {
-    //read_obj(...);
+    read_obj(mesh_filename, m_positions, m_indices, m_normals, m_tcoords);
     set_random_colors();
     gen_buffers();
     update_buffers();
@@ -343,5 +343,5 @@ MeshRenderable::~MeshRenderable()
     glcheck(glDeleteBuffers(1, &m_cBuffer));
     glcheck(glDeleteBuffers(1, &m_nBuffer));
     glcheck(glDeleteBuffers(1, &m_iBuffer));
-}*/
+} */
 
