@@ -18,13 +18,35 @@ void initialize_scene( Viewer& viewer )
 	FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
 	viewer.addRenderable(frame);
 
-	// TODO: Add an hierarchical structure of 3D objects.
+	
+
 }
 
 int main() 
 {
 	Viewer viewer(1280,720);
 	initialize_scene(viewer);
+
+	ShaderProgramPtr parentProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	ShaderProgramPtr childProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	viewer.addShaderProgram(parentProg);
+	viewer.addShaderProgram(childProg);
+
+	std::shared_ptr<CylinderMeshRenderable> root = std::make_shared<CylinderMeshRenderable>(parentProg, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> child1 = std::make_shared<CylinderMeshRenderable>(childProg, false, 20, true);
+
+	glm::mat4 rootGlobalTransform;
+	root->setGlobalTransform(rootGlobalTransform);
+	glm::mat4 child1GlobalTransform;
+	child1->setGlobalTransform(child1GlobalTransform);
+	glm::mat4 child1LocalTransform;
+	child1->setLocalTransform(child1LocalTransform);
+
+	HierarchicalRenderable::addChild(root, child1);
+
+	viewer.addRenderable(root);
 
 	while( viewer.isRunning() )
 	{

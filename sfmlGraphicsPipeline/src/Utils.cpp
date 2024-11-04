@@ -308,16 +308,16 @@ void getUnitCylinder(vector<glm::vec3> &positions, vector<glm::vec3> &normals, s
         // Positions
 
         // top triangle
-        positions[ voffset +  0 ] = glm::vec3(0, 0, 1);
-        positions[ voffset +  1 ] = glm::vec3(previous_cos, previous_sin, 1);
-        positions[ voffset +  2 ] = glm::vec3(cos, sin, 1);
+        positions[ voffset +  0 ] = glm::vec3(0, 0, 10);
+        positions[ voffset +  1 ] = glm::vec3(previous_cos, previous_sin, 10);
+        positions[ voffset +  2 ] = glm::vec3(cos, sin, 10);
 
         // side triangles
-        positions[ voffset +  3 ] = glm::vec3(previous_cos, previous_sin, 1);
-        positions[ voffset +  4 ] = glm::vec3(cos, sin, 1);
+        positions[ voffset +  3 ] = glm::vec3(previous_cos, previous_sin, 10);
+        positions[ voffset +  4 ] = glm::vec3(cos, sin, 10);
         positions[ voffset +  5 ] = glm::vec3(previous_cos, previous_sin, 0);
-        positions[ voffset +  6 ] = glm::vec3(cos, sin, 1);
-        positions[ voffset +  7 ] = glm::vec3(cos, sin, 0);
+        positions[ voffset +  6 ] = glm::vec3(cos, sin, 0);
+        positions[ voffset +  7 ] = glm::vec3(cos, sin, 10);
         positions[ voffset +  8 ] = glm::vec3(previous_cos, previous_sin, 0);
 
         // bottom triangle
