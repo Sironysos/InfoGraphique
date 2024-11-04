@@ -16,7 +16,7 @@ void initialize_scene( Viewer& viewer )
     viewer.addShaderProgram( flatShader );
 
 
-    const std::string pillar_path = "../../models3D/caisse.obj";
+    const std::string pillar_path = "../../models3D/train2.obj";
     MeshRenderablePtr pillar = std::make_shared<MeshRenderable>(flatShader, pillar_path);
     viewer.addRenderable(pillar);
 
