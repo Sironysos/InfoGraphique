@@ -18,16 +18,7 @@ void initialize_scene( Viewer& viewer )
 	FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
 	viewer.addRenderable(frame);
 
-	
-
-}
-
-int main() 
-{
-	Viewer viewer(1280,720);
-	initialize_scene(viewer);
-
-	ShaderProgramPtr parentProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+		ShaderProgramPtr parentProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
 		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	ShaderProgramPtr childProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
 		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
@@ -41,12 +32,22 @@ int main()
 	root->setGlobalTransform(rootGlobalTransform);
 	glm::mat4 child1GlobalTransform;
 	child1->setGlobalTransform(child1GlobalTransform);
-	glm::mat4 child1LocalTransform;
+	glm::mat4 child1LocalTransform=getTranslationMatrix(0, 0, 10);
+	child1LocalTransform = glm::rotate(child1LocalTransform, 0.5f, glm::vec3(1, 0, 0));
 	child1->setLocalTransform(child1LocalTransform);
-
 	HierarchicalRenderable::addChild(root, child1);
-
 	viewer.addRenderable(root);
+
+	
+
+	
+
+}
+
+int main() 
+{
+	Viewer viewer(1280,720);
+	initialize_scene(viewer);
 
 	while( viewer.isRunning() )
 	{
