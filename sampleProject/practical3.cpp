@@ -45,13 +45,15 @@ void initialize_scene( Viewer& viewer )
 	c6->setLocalTransform(scale_matrix);
 	c7->setLocalTransform(scale_matrix);
 	*/
-
+	c1->setGlobalTransform(getRotationMatrix(M_PI*0.5,0,0,1));
+	c1->setGlobalTransform(getRotationMatrix(-M_PI*0.5,1,0,0));
 	c2->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(M_PI*0.15, 1,0,0));
 	c3->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(-M_PI*0.15, 1,0,0));
 	c4->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(M_PI*0.15, 1,0,0));
 	c5->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(-M_PI*0.15, 1,0,0));
 	c6->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(M_PI*0.15, 1,0,0));
 	c7->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(-M_PI*0.15, 1,0,0));
+	
 
 	viewer.addRenderable(c1);
 }

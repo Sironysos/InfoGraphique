@@ -6,6 +6,7 @@
 #include <GeometricTransformation.hpp>
 #include <iostream>
 #include <iomanip>
+#include <Utils.hpp>
 
 void movingTree(Viewer& viewer);
 void movingCylinder(Viewer& viewer);
@@ -46,15 +47,21 @@ void movingCylinder( Viewer& viewer )
 
     //Animated cylinder
     auto cylinder = std::make_shared<CylinderMeshRenderable>(flatShader, false);
+    viewer.addRenderable(cylinder);
     cylinder->setGlobalTransform(glm::mat4(1.0));
 
-    // TODO: Keyframes on parent transformation
-    //cylinder->addGlobalTransformKeyframe(...);
-    //...
+    // Keyframes on parent transformation
+    cylinder->addGlobalTransformKeyframe(getRotationMatrix(0.0, glm::vec3(0,1,0)),0.0);
+    cylinder->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.5, glm::vec3(0,1,0)),1.0);
+    cylinder->addGlobalTransformKeyframe(getRotationMatrix(M_PI, glm::vec3(0,1,0)), 2.0);
+    cylinder->addGlobalTransformKeyframe(getRotationMatrix(M_PI*1.5, glm::vec3(0,1,0)), 3.0);
+    cylinder->addGlobalTransformKeyframe(getRotationMatrix(M_PI*2.0, glm::vec3(0,1,0)), 4.0);
 
-    // TODO: Keyframes on local transformation
-    //cylinder->addLocalTransformKeyframe(...);
-    //...
+    // Keyframes on local transformation
+    /* cylinder->addLocalTransformKeyframe(glm::rotate(cylinder->getLocalTransform(), M_PIf*0.5f, glm::vec3(0,1,0)), 1.0);
+    cylinder->addLocalTransformKeyframe(glm::rotate(cylinder->getLocalTransform(), M_PIf*0.5f, glm::vec3(0,1,0)), 2.0);
+    cylinder->addLocalTransformKeyframe(glm::rotate(cylinder->getLocalTransform(), M_PIf*0.5f, glm::vec3(0,1,0)), 3.0);
+    cylinder->addLocalTransformKeyframe(glm::rotate(cylinder->getLocalTransform(), M_PIf*0.5f, glm::vec3(0,1,0)), 4.0); */
 
     viewer.startAnimation();
 }
