@@ -5,6 +5,7 @@
 #include <CylinderMeshRenderable.hpp>
 #include <MeshRenderable.hpp>
 #include <SphereMeshRenderable.hpp>
+#include <Utils.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
@@ -18,30 +19,41 @@ void initialize_scene( Viewer& viewer )
 	FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
 	viewer.addRenderable(frame);
 
-		ShaderProgramPtr parentProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
-	ShaderProgramPtr childProg = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
-	viewer.addShaderProgram(parentProg);
-	viewer.addShaderProgram(childProg);
+	std::shared_ptr<CylinderMeshRenderable> c1 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> c2 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> c3 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> c4 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> c5 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> c6 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
+	std::shared_ptr<CylinderMeshRenderable> c7 = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, true);
 
-	std::shared_ptr<CylinderMeshRenderable> root = std::make_shared<CylinderMeshRenderable>(parentProg, false, 20, true);
-	std::shared_ptr<CylinderMeshRenderable> child1 = std::make_shared<CylinderMeshRenderable>(childProg, false, 20, true);
+	HierarchicalRenderable::addChild(c1,c2);
+	HierarchicalRenderable::addChild(c1,c3);
+	HierarchicalRenderable::addChild(c2,c4);
+	HierarchicalRenderable::addChild(c2,c5);
+	HierarchicalRenderable::addChild(c3,c6);
+	HierarchicalRenderable::addChild(c3,c7);
 
-	glm::mat4 rootGlobalTransform;
-	root->setGlobalTransform(rootGlobalTransform);
-	glm::mat4 child1GlobalTransform;
-	child1->setGlobalTransform(child1GlobalTransform);
-	glm::mat4 child1LocalTransform=getTranslationMatrix(0, 0, 10);
-	child1LocalTransform = glm::rotate(child1LocalTransform, 0.5f, glm::vec3(1, 0, 0));
-	child1->setLocalTransform(child1LocalTransform);
-	HierarchicalRenderable::addChild(root, child1);
-	viewer.addRenderable(root);
+	/*
+	glm::mat4 scale_matrix = getScaleMatrix(0.2,0.2,1.0);
 
-	
+	c1->setLocalTransform(scale_matrix);
+	c2->setLocalTransform(scale_matrix);
+	c3->setLocalTransform(scale_matrix);
+	c4->setLocalTransform(scale_matrix);
+	c5->setLocalTransform(scale_matrix);
+	c6->setLocalTransform(scale_matrix);
+	c7->setLocalTransform(scale_matrix);
+	*/
 
-	
+	c2->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(M_PI*0.15, 1,0,0));
+	c3->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(-M_PI*0.15, 1,0,0));
+	c4->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(M_PI*0.15, 1,0,0));
+	c5->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(-M_PI*0.15, 1,0,0));
+	c6->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(M_PI*0.15, 1,0,0));
+	c7->setGlobalTransform(getTranslationMatrix(0,0,10)*getRotationMatrix(-M_PI*0.15, 1,0,0));
 
+	viewer.addRenderable(c1);
 }
 
 int main() 
