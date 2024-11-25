@@ -48,8 +48,8 @@ void initialize_scene( Viewer& viewer )
     //Populate the dynamic system with particles, forcefields and create renderables associated to them for visualization.
     //Uncomment only one of the following line
 
-    particles(viewer, system, systemRenderable);
-    //springs(viewer, system, systemRenderable);
+    //particles(viewer, system, systemRenderable);
+    springs(viewer, system, systemRenderable);
     //collisions(viewer, system, systemRenderable);
     //playPool(viewer, system, systemRenderable);
 
@@ -164,7 +164,7 @@ void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePt
     }
 
     //Initialize springs attributes (stiffness, rest length, damping)
-    float stiffness = 4e3, l0 = gridWidth / (particlePerLine-1), damping = 0.0;
+    float stiffness = 4e3, l0 = gridWidth / (particlePerLine-1), damping = 10.0;
 
     //Create springs between particles of the grid, horizontally and vertically
     //Store them in a list
