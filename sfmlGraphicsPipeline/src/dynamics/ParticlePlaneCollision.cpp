@@ -24,6 +24,7 @@ void ParticlePlaneCollision::do_solveCollision()
     //Particle::getRadius(), Particle::getPosition(), Particle::getVelocity(), Particle::setPosition(), Particle::setVelocity()
 
     //Compute particle-plane distance
+    float particlePlaneDist = glm::dot(m_particle->getPosition(), m_plane->normal());
 
     //Project the particle on the plane
 

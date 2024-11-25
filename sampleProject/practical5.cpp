@@ -49,8 +49,8 @@ void initialize_scene( Viewer& viewer )
     //Uncomment only one of the following line
 
     //particles(viewer, system, systemRenderable);
-    springs(viewer, system, systemRenderable);
-    //collisions(viewer, system, systemRenderable);
+    //springs(viewer, system, systemRenderable);
+    collisions(viewer, system, systemRenderable);
     //playPool(viewer, system, systemRenderable);
 
     //Finally activate animation
@@ -164,7 +164,7 @@ void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePt
     }
 
     //Initialize springs attributes (stiffness, rest length, damping)
-    float stiffness = 4e3, l0 = gridWidth / (particlePerLine-1), damping = 10;
+    float stiffness = 4e3, l0 = gridWidth / (particlePerLine-1), damping = 100;
 
     //Create springs between particles of the grid, horizontally and vertically
     //Store them in a list
@@ -229,7 +229,7 @@ void collisions(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderabl
     viewer.addShaderProgram( flatShader );
 
     //Activate collision detection
-    system->setCollisionsDetection(false);
+    system->setCollisionsDetection(true);
 
     //Initialize the restitution coefficient for collision
     //1.0 = full elastic response
