@@ -164,7 +164,7 @@ void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePt
     }
 
     //Initialize springs attributes (stiffness, rest length, damping)
-    float stiffness = 4e3, l0 = gridWidth / (particlePerLine-1), damping = 10.0;
+    float stiffness = 4e3, l0 = gridWidth / (particlePerLine-1), damping = 10;
 
     //Create springs between particles of the grid, horizontally and vertically
     //Store them in a list

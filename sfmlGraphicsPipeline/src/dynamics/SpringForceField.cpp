@@ -26,18 +26,20 @@ void SpringForceField::do_addForce()
     //If the displacement is measurable by the computer (otherwise no force)
     if(l>std::numeric_limits<float>::epsilon())
     {
-        return;
+        dir = dir/l;
+        float delta_l = l - m_equilibriumLength;
+        glm::vec3 force = -m_stiffness * delta_l * dir;
+
+        
+
+        glm::vec3 v = m_p2->getVelocity() - m_p1->getVelocity();
+        float dampingForce = m_damping * glm::dot(v, dir);
+        force -= dampingForce*dir;
+        
+        m_p1->incrForce(-force);
+        m_p2->incrForce(force);
     }
-    dir = dir/l;
-    float delta_l = l - m_equilibriumLength;
-    glm::vec3 force = -m_stiffness * delta_l * dir;
-
-    //m_p1->incrForce(force);
-    m_p1->incrForce(-force);
-    m_p2->incrForce(force);
-
-    glm::vec3 v = m_p2->getVelocity() - m_p1->getVelocity();
-    //TODO
+    
 
 }
 
