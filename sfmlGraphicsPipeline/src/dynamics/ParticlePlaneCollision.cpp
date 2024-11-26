@@ -22,14 +22,23 @@ void ParticlePlaneCollision::do_solveCollision()
     //Plane::distanceToOrigin(): Return the distance to origin from the plane
     //Plane::normal(): Return the normal of the plane
     //Particle::getRadius(), Particle::getPosition(), Particle::getVelocity(), Particle::setPosition(), Particle::setVelocity()
+    // Compute the distance from the particle to the plane
+    float distance = glm::dot(m_particle->getPosition(), m_plane->normal()) - m_plane->distanceToOrigin();
 
-    //Compute particle-plane distance
-    float particlePlaneDist = glm::dot(m_particle->getPosition(), m_plane->normal());
+    // Check if the particle is colliding with the plane
+    if (std::abs(distance) > m_particle->getRadius()) return;
 
-    //Project the particle on the plane
+    // Project the particle onto the plane
+    glm::vec3 projection = m_particle->getPosition() - distance * m_plane->normal();
 
-    //Compute post-collision velocity
+    // Compute the post-collision velocity
+    glm::vec3 velocity = m_particle->getVelocity();
+    glm::vec3 normal = m_plane->normal();
+    glm::vec3 newVelocity = velocity - (1.0f + m_restitution) * glm::dot(velocity, normal) * normal;
 
+    // Update the particle's position and velocity
+    m_particle->setPosition(projection + m_particle->getRadius() * normal);
+    m_particle->setVelocity(newVelocity);
 }
 
 
@@ -59,6 +68,13 @@ bool testParticlePlane(const ParticlePtr &particle, const PlanePtr &plane)
     //Plane::distanceToOrigin(): Return the distance to origin from the plane
     //Plane::normal(): Return the normal of the plane
     //Particle::getRadius(), Particle::getPosition()
+    // Get the particle position and plane normal
+    glm::vec3 particlePosition = particle->getPosition();
+    glm::vec3 planeNormal = plane->normal();
 
-    return false;
+    // Compute the distance from the particle to the plane
+    float distance = glm::dot(particlePosition, planeNormal) - plane->distanceToOrigin();
+
+    // Check if the distance is less than or equal to the particle radius
+    return std::abs(distance) <= particle->getRadius();
 }
