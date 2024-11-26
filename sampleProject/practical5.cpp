@@ -50,8 +50,8 @@ void initialize_scene( Viewer& viewer )
 
     //particles(viewer, system, systemRenderable);
     //springs(viewer, system, systemRenderable);
-    collisions(viewer, system, systemRenderable);
-    //playPool(viewer, system, systemRenderable);
+    //collisions(viewer, system, systemRenderable);
+    playPool(viewer, system, systemRenderable);
 
     //Finally activate animation
     viewer.startAnimation();
@@ -252,7 +252,7 @@ void collisions(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderabl
 
         //Initialize a particle with position, velocity, mass and radius and add it to the system
         px = glm::vec3(0.0,1.0,0.0);
-        pv = glm::vec3(0.0,0.0,0.0);
+        pv = glm::vec3(-1.0,0.0,0.0);
         pr = 0.1;
         pm = 1.0;
         ParticlePtr particle = std::make_shared<Particle>( px, pv, pm, pr);

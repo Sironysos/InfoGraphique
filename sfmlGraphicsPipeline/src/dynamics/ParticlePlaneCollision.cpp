@@ -77,4 +77,5 @@ bool testParticlePlane(const ParticlePtr &particle, const PlanePtr &plane)
 
     // Check if the distance is less than or equal to the particle radius
     return std::abs(distance) <= particle->getRadius();
+    return false;
 }
