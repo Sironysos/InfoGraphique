@@ -4,5 +4,5 @@ in vec3 normal;
 out vec4 fragmentColor;
 void main ()
 {
-fragmentColor = vec4(normal,1);
+fragmentColor = color;
 }
