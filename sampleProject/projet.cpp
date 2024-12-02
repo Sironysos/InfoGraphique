@@ -26,7 +26,7 @@ void initialize_scene( Viewer& viewer )
     viewer.addRenderable(frame);
 
     //Final train
-    const std::string train_path = "../../models3D/3d-model.obj";
+    const std::string train_path = "../../models3D/trainFinal.obj";
     MeshRenderablePtr train = std::make_shared<MeshRenderable>(flatShader, train_path);
     train->setGlobalTransform(glm::mat4(1.0));
     //scale the train
