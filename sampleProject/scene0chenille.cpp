@@ -38,9 +38,9 @@ void initialize_scene( Viewer& viewer )
 	// Add light to the scene
 	glm::vec3 red(0.9,0.3,0.4), green(0.3,0.9,0.4), blue(0.4,0.3,0.9);
 	glm::vec3 white(1,1,1);
-	glm::vec3 maladWhite(1,0.933,0.64);
+	glm::vec3 leafGreen(0,1,0);
 	{ // Moving SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,-8), glm::vec3(0,-0.2,-0.1), glm::vec3(0), maladWhite, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,-8), glm::vec3(0,-0.2,-0.1), glm::vec3(0), leafGreen, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
 
         auto spot_light_renderable = std::make_shared<SpotLightRenderable>(flatShader, spot_light);
@@ -48,7 +48,7 @@ void initialize_scene( Viewer& viewer )
     }
 
 
-	const std::string traing_path = "../../models3D/traingMalaaade.obj";
+	const std::string traing_path = "../../models3D/train2.obj";
     LightedMeshRenderablePtr traing = std::make_shared<LightedMeshRenderable>(phongShader, traing_path, Material::GreenRubber());
 	viewer.addRenderable(traing);
 
@@ -56,22 +56,18 @@ void initialize_scene( Viewer& viewer )
 
 	HierarchicalRenderable::addChild(traing, lighted_cube);
 
-	traing->setGlobalTransform(glm::mat4(1.0)*getRotationMatrix(-M_PI*0.55, glm::vec3(1,0,0))*getTranslationMatrix(glm::vec3(0,0,-2)));
+	traing->setGlobalTransform(glm::mat4(1.0)*getTranslationMatrix(glm::vec3(0,0,5))*getScaleMatrix(0.8));
 
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.0, glm::vec3(0,0,1)),0.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI/6, glm::vec3(0,0,1)),1.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI/3, glm::vec3(0,0,1)),2.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI/2, glm::vec3(0,0,1)),3.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*2/3, glm::vec3(0,0,1)),4.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*5/6, glm::vec3(0,0,1)),5.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*2/3, glm::vec3(0,0,1)),6.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI/2, glm::vec3(0,0,1)),7.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI/3, glm::vec3(0,0,1)),8.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI/6, glm::vec3(0,0,1)),9.0/0.3);
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.0, glm::vec3(0,0,1)),10.0/0.3);
+	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1,0,0)),0.0);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1.7,0,0)),0.6);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(-1,0,0)),2.2);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(-1.7,0,0)),2.8);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1,0,0)),4.0);
+    
 	
-	lighted_cube->setGlobalTransform(glm::mat4(1.0)*getRotationMatrix(-M_PI*0.55, glm::vec3(1,0,0))*getTranslationMatrix(glm::vec3(0,0,-2)));
-    lighted_cube->setLocalTransform(getScaleMatrix(50,.2,50)*getTranslationMatrix(0,0,0));
+	
+	lighted_cube->setGlobalTransform(glm::mat4(1.0)*getTranslationMatrix(glm::vec3(0,-2.5,10)));
+    lighted_cube->setLocalTransform(getScaleMatrix(100,.2,100)*getTranslationMatrix(0,0,0));
 
 
 

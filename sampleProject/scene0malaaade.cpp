@@ -39,8 +39,8 @@ void initialize_scene( Viewer& viewer )
 	glm::vec3 red(0.9,0.3,0.4), green(0.3,0.9,0.4), blue(0.4,0.3,0.9);
 	glm::vec3 white(1,1,1);
 	glm::vec3 maladWhite(1,0.933,0.64);
-	{ // Moving SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,-8), glm::vec3(0,-0.2,-0.1), glm::vec3(0), maladWhite, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+	{ // SpotLight
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,-8), glm::vec3(0,-0.2,-0.1), glm::vec3(0), maladWhite, glm::vec3(0) ,1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
 
         auto spot_light_renderable = std::make_shared<SpotLightRenderable>(flatShader, spot_light);
