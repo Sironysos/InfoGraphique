@@ -22,10 +22,11 @@ void main()
     vec3 viewDir = normalize( cameraPosition - surfacePosition );
 
     // Try other blending coefficent computation (e.g. with time)
-    float blendingCoeff = 0.5;
+    float blendingCoeff = mod(time, 1.0);
 
     vec4 tex1_sample = texture2D(texSampler1, surfel_tcoord);
     vec4 tex2_sample = texture2D(texSampler2, surfel_tcoord);
 
-    outColor = clamp(tex1_sample * tex2_sample,0,1);
+    //outColor = clamp(tex1_sample * tex2_sample,0,1);
+    outColor = mix(tex1_sample, tex2_sample, blendingCoeff);
 }
