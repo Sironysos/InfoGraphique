@@ -9,6 +9,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <string>
+#include <lighting/Material.hpp>
 
 /**@brief Collect mesh data from an OBJ file.
  *
@@ -30,5 +31,25 @@ bool read_obj(
         std::vector<glm::vec3>& normals,
         std::vector<glm::vec2>& texcoords
         );
+
+bool read_obj_with_materials(
+        const std::string& obj_path,
+        const std::string& mtl_basepath,
+        std::vector<std::vector<glm::vec3>>& all_positions,
+        std::vector<std::vector<glm::vec3>>& all_normals,
+        std::vector<std::vector<glm::vec2>>& all_texcoords,
+        std::vector<MaterialPtr>& materials
+        );
+
+bool read_obj_with_materials_indexed(
+        const std::string& obj_path,
+        const std::string& mtl_basepath,
+        std::vector<std::vector<glm::vec3>>& all_positions,
+        std::vector<std::vector<glm::vec3>>& all_normals,
+        std::vector<std::vector<glm::vec2>>& all_texcoords,
+        std::vector<std::vector<unsigned int>>& all_indices,
+        std::vector<MaterialPtr>& materials
+        );
+
 
 #endif //IO_HPP

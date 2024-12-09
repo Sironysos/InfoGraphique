@@ -17,7 +17,7 @@ LightedMeshRenderable::LightedMeshRenderable(ShaderProgramPtr shaderProgram,
                                              const std::vector< glm::vec4 > & colors,
                                              const MaterialPtr & material) :
     MeshRenderable(shaderProgram, positions, indices, normals, colors),
-    m_material(m_material)
+    m_material(material)
 {}
 
 LightedMeshRenderable::LightedMeshRenderable(ShaderProgramPtr shaderProgram,
