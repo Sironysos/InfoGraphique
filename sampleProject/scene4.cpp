@@ -4,11 +4,15 @@
 #include <MeshRenderable.hpp>
 #include <FrameRenderable.hpp>
 #include <MeshRenderable.hpp>
-
 #include <texturing/TexturedMeshRenderable.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
+#include <texturing/CubeMapRenderable.hpp>
 #include <Io.hpp>
+#include <Utils.hpp>
 #include <lighting/SpotLightRenderable.hpp>
+#include <lighting/DirectionalLightRenderable.hpp>
+#include <lighting/LightedMeshRenderable.hpp>
+#include <lighting/LightedCubeRenderable.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
@@ -90,7 +94,6 @@ void initialize_scene( Viewer& viewer )
     TexturedLightedMeshRenderablePtr bunny2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path2, materials[0], bunny_texture_path);
     
     viewer.addRenderable(bunny2);
-
 
 }
 
