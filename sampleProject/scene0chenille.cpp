@@ -58,11 +58,11 @@ void initialize_scene( Viewer& viewer )
 
 	traing->setGlobalTransform(glm::mat4(1.0)*getTranslationMatrix(glm::vec3(0,0,5))*getScaleMatrix(0.8));
 
-	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1,0,0)),0.0);
-    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1.7,0,0)),0.6);
-    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(-1,0,0)),2.2);
-    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(-1.7,0,0)),2.8);
-    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.05, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1,0,0)),4.0);
+	traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.1, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1,0,0)),0.0);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.1, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1.7,0,0)),1);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*0.1, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(-1,0,0)),2);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.1, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(-1.7,0,0)),3);
+    traing->addLocalTransformKeyframe(getRotationMatrix(M_PI*-0.1, glm::vec3(0,1,0))*getTranslationMatrix(glm::vec3(1,0,0)),4.0);
     
 	
 	
