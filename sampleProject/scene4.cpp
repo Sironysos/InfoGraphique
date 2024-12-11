@@ -65,7 +65,7 @@ void initialize_scene( Viewer& viewer )
 	glm::vec3 white(1,1,1);
 	glm::vec3 leafGreen(0,1,0);
 	{ // Moving SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,0), glm::vec3(0,-0.2,-0.1), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
 
         auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
@@ -79,19 +79,25 @@ void initialize_scene( Viewer& viewer )
 
     std::string bunny_mesh_path2 = "../../models3D/cactus/source/cap.obj";
 
-    std::vector<std::vector<glm::vec3>> all_positions;
-    std::vector<std::vector<glm::vec3>> all_normals;
-    std::vector<std::vector<glm::vec2>> all_texcoords;
-    std::vector<std::vector<unsigned int>> all_indices;
-    std::vector<MaterialPtr> materials;
+    std::vector<std::vector<glm::vec3>> all_positions1;
+    std::vector<std::vector<glm::vec3>> all_normals1;
+    std::vector<std::vector<glm::vec2>> all_texcoords1;
+    std::vector<std::vector<unsigned int>> all_indices1;
+    std::vector<MaterialPtr> materials1;
 
-    read_obj_with_materials(bunny_mesh_path, "../../models3D/cactus/source/", all_positions, all_normals, all_texcoords, materials);
-    TexturedLightedMeshRenderablePtr bunny = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path, materials[0], bunny_texture_path);
+    std::vector<std::vector<glm::vec3>> all_positions2;
+    std::vector<std::vector<glm::vec3>> all_normals2;
+    std::vector<std::vector<glm::vec2>> all_texcoords2;
+    std::vector<std::vector<unsigned int>> all_indices2;
+    std::vector<MaterialPtr> materials2;
+
+    read_obj_with_materials(bunny_mesh_path, "../../models3D/cactus/source/", all_positions1, all_normals1, all_texcoords1, materials1);
+    TexturedLightedMeshRenderablePtr bunny = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path, materials1[0], bunny_texture_path);
     
     viewer.addRenderable(bunny);
 
-    read_obj_with_materials(bunny_mesh_path2, "../../models3D/cactus/source/", all_positions, all_normals, all_texcoords, materials);
-    TexturedLightedMeshRenderablePtr bunny2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path2, materials[0], bunny_texture_path);
+    read_obj_with_materials(bunny_mesh_path2, "../../models3D/cactus/source/", all_positions2, all_normals2, all_texcoords2, materials2);
+    TexturedLightedMeshRenderablePtr bunny2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path2, materials2[0], bunny_texture_path);
     
     viewer.addRenderable(bunny2);
 

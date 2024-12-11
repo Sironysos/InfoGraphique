@@ -1,68 +1,63 @@
 #include <Viewer.hpp>
 #include <ShaderProgram.hpp>
-#include <CylinderMeshRenderable.hpp>
-#include <MeshRenderable.hpp>
 #include <FrameRenderable.hpp>
-#include <MeshRenderable.hpp>
 #include <Utils.hpp>
 #include <lighting/SpotLightRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
 #include <lighting/LightedMeshRenderable.hpp>
-#include <texturing/CubeMapRenderable.hpp>
-#include <lighting/LightedCubeRenderable.hpp>
+#include <texturing/TexturedLightedMeshRenderable.hpp>
 #include <Io.hpp>
-#include "./../sfmlGraphicsPipeline/include/texturing/TexturedMeshRenderable.hpp"
 
 void initialize_scene( Viewer& viewer )
 {
-    // Create a shader program
-    ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
-        "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-        "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
-    viewer.addShaderProgram(flatShader);
+    //Textured shader
+    //    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl","../shaders/textureFragment.glsl");
+    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
+    viewer.addShaderProgram( texShader );
 
-    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(
-        "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-        "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
-    viewer.addShaderProgram(cubeMapShader);
-
-    // Define a shader that encodes an illumination model (Phong shading)
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>(
         "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
         "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
     viewer.addShaderProgram(phongShader);
 
-    // Define a transformation
-    glm::mat4 globalTransformation, localTransformation;
-
-    // Define a material
-    auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
-
     // Define colors for lights
-    glm::vec3 yellow(1, 1, 0);
+    glm::vec3 yellow = glm::vec3(1, 1, 0);
+    glm::vec3 white(1,1,1);
 
     { // SpotLight
         // Set the initial Spotlight position inside the box
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0, 2, 0), glm::vec3(0, -1, -0), glm::vec3(0), yellow, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,-2), glm::vec3(0,-1,3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
 
-        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(flatShader, spot_light);
+        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
         viewer.addRenderable(spot_light_renderable);
 
-        // Animate the spotlight by adding keyframes for its position
-        spot_light->addGlobalTransformKeyframe(getTranslationMatrix(0, 2, 0), 0.0);
-        spot_light->addGlobalTransformKeyframe(getTranslationMatrix(0, 2, -4.25), 8.0);
+        spot_light_renderable->setLocalTransform(getScaleMatrix(0.1, 0.1, 0.1));
+
+        // Animate the spotlight by adding keyframes for its position*
+        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,5,-6), glm::vec3(0,0,0), Light::base_forward), 0);
+        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,5,-10.25), glm::vec3(0,0,-4.25), Light::base_forward), 10.0);
     }
 
     const std::string box_path = "../../models3D/caisse.obj";
-    LightedMeshRenderablePtr box = std::make_shared<LightedMeshRenderable>(phongShader, box_path, Material::GreenRubber());
+    std::string box_texture_path = "../../models3D/crate.jpg";
+
+    std::vector<std::vector<glm::vec3>> all_positions;
+    std::vector<std::vector<glm::vec3>> all_normals;
+    std::vector<std::vector<glm::vec2>> all_texcoords;
+    std::vector<MaterialPtr> materials;
+
+    read_obj_with_materials(box_path, "../../models3D/", all_positions, all_normals, all_texcoords, materials);
+
+    TexturedLightedMeshRenderablePtr box = std::make_shared<TexturedLightedMeshRenderable>(
+        texShader, box_path, materials[0], box_texture_path);
     box->setGlobalTransform(glm::mat4(1.0f));
 
     viewer.addRenderable(box);
 
     // Keyframe animation for the box movement
     box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, 0), 0.0);
-    box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, -4.25), 8.0);
+    box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, -4.25), 10.0);
 }
 
 int main() 
