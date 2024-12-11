@@ -74,10 +74,9 @@ void initialize_scene( Viewer& viewer )
 
     // Textured cactus
     viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
-    std::string bunny_mesh_path = "../../models3D/cactus/source/untitled.obj";
-    std::string bunny_texture_path = "../../models3D/cactus/textures/Amigo_03.png";
+    std::string bunny_mesh_path = "../../models3D/penguin/source/penguin.obj";
+    std::string bunny_texture_path = "../../models3D/penguin/textures/Material_baseColor.png";
 
-    std::string bunny_mesh_path2 = "../../models3D/cactus/source/cap.obj";
 
     std::vector<std::vector<glm::vec3>> all_positions1;
     std::vector<std::vector<glm::vec3>> all_normals1;
@@ -85,21 +84,12 @@ void initialize_scene( Viewer& viewer )
     std::vector<std::vector<unsigned int>> all_indices1;
     std::vector<MaterialPtr> materials1;
 
-    std::vector<std::vector<glm::vec3>> all_positions2;
-    std::vector<std::vector<glm::vec3>> all_normals2;
-    std::vector<std::vector<glm::vec2>> all_texcoords2;
-    std::vector<std::vector<unsigned int>> all_indices2;
-    std::vector<MaterialPtr> materials2;
 
-    read_obj_with_materials(bunny_mesh_path, "../../models3D/cactus/source/", all_positions1, all_normals1, all_texcoords1, materials1);
+    read_obj_with_materials(bunny_mesh_path, "../../models3D/penguin/source/", all_positions1, all_normals1, all_texcoords1, materials1);
     TexturedLightedMeshRenderablePtr bunny = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path, materials1[0], bunny_texture_path);
     
     viewer.addRenderable(bunny);
 
-    read_obj_with_materials(bunny_mesh_path2, "../../models3D/cactus/source/", all_positions2, all_normals2, all_texcoords2, materials2);
-    TexturedLightedMeshRenderablePtr bunny2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, bunny_mesh_path2, materials2[0], bunny_texture_path);
-    
-    viewer.addRenderable(bunny2);
 
 }
 
