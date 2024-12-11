@@ -62,8 +62,8 @@ void initialize_scene( Viewer& viewer )
 
 int main() 
 {
-    //glm::vec4 background_color(0.0,0.0,0.0,1);
-	glm::vec4 background_color(0.8,0.8,0.8,1);
+    glm::vec4 background_color(0.0,0.0,0.0,1);
+	//glm::vec4 background_color(0.8,0.8,0.8,1);
 	Viewer viewer(1280,720, background_color);
 	initialize_scene(viewer);
 	viewer.startAnimation();
