@@ -1,21 +1,21 @@
 # Aspose.3D Wavefront OBJ Exporter
 # Copyright 2004-2024 Aspose Pty Ltd.
-# File created: 12/11/2024 21:33:51
+# File created: 12/11/2024 21:59:27
 
-g obj_62033887
+g obj_8623524
 
 #
-# object obj_62033887
+# object obj_8623524
 #
 
-v -5 2.6121564 0
-v -5 -3.3550832 0
-v -5 2.6121564 0.01
-v -5 -3.3550832 0.01
-v 5 2.6121564 0
-v 5 2.6121564 0.01
-v 5 -3.3550832 0
-v 5 -3.3550832 0.01
+v -5 3 0
+v -5 -3 0
+v -5 3 0.1
+v -5 -3 0.1
+v 5 3 0
+v 5 3 0.1
+v 5 -3 0
+v 5 -3 0.1
 # 8 vertices
 
 vn -1 0 0
