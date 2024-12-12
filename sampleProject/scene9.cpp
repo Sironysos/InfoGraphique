@@ -47,12 +47,29 @@ void initialize_scene( Viewer& viewer )
 	glm::vec3 white(1,1,1);
 	glm::vec3 leafGreen(0,1,0);
 	{ // SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-1), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
 
         auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
         viewer.addRenderable(spot_light_renderable);
     }
+
+    //TODO : add a spotlight following the pannel
+   /* { // SpotLight
+        // Set the initial Spotlight position inside the box
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        viewer.addSpotLight(spot_light);
+
+        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
+        viewer.addRenderable(spot_light_renderable);
+
+        spot_light_renderable->setLocalTransform(getScaleMatrix(0.1, 0.1, 0.1));
+
+        // Animate the spotlight by adding keyframes for its position*
+        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,3,2), glm::vec3(0,0,0), Light::base_forward), 0);
+        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,3,2), glm::vec3(0,0,0), Light::base_forward), 3);
+        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,3,-5), glm::vec3(0,0,0), Light::base_forward), 10.0);
+    } */
 
     viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
     std::string penguin_mesh_path = "../../models3D/penguinEileen/bodyPingoinobj.obj";
@@ -183,19 +200,20 @@ void initialize_scene( Viewer& viewer )
 
 
     //panneau
+    //TODO : les textures marchent pas
     const std::string pannel_path = "../../models3D/pano/pannal.obj";
     LightedMeshRenderablePtr pannel = std::make_shared<LightedMeshRenderable>(phongShader, pannel_path, Material::WhiteRubber());
     pannel->setGlobalTransform(getScaleMatrix(0.1,0.1,0.1));
 
     const std::string poto_path = "../../models3D/pano/poto.obj";
-    LightedMeshRenderablePtr poto = std::make_shared<LightedMeshRenderable>(phongShader, poto_path, Material::WhiteRubber());
+    LightedMeshRenderablePtr poto = std::make_shared<LightedMeshRenderable>(phongShader, poto_path, Material::Copper());
     pannel->setGlobalTransform(getScaleMatrix(0.1,0.1,0.1));
 
     HierarchicalRenderable::addChild(pannel, poto);
 
-    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,40),0.0);
-    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,40),3.0);
-    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,0),10.0);
+    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,35),0.0);
+    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,35),3.0);
+    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,-15),10.0);
 
     viewer.addRenderable(pannel);
 

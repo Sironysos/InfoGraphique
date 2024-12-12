@@ -14,6 +14,9 @@ void initialize_scene( Viewer& viewer )
     // a rail with one penguin on the left, three on the current rail,
     // and one with a lever on his hand
 
+    //TODO scene 2 :
+    // trolley problem
+
     ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
         "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
         "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");

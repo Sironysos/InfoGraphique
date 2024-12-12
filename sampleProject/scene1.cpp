@@ -9,6 +9,15 @@
 
 void initialize_scene( Viewer& viewer )
 {
+    // In this scene, we will zoom into a hole of the box, 
+    // and then ther will be a train that will pass by from left to right, on rails
+    // and a black rectangle will appear next to the train
+
+    //TODO scene 1 : 
+    //rails
+    //train
+    //background
+
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
     viewer.addShaderProgram( texShader );
