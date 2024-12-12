@@ -24,7 +24,7 @@ void initialize_scene( Viewer& viewer )
     glm::vec3 yellow = glm::vec3(1, 1, 0);
     glm::vec3 white(1,1,1);
 
-    { // SpotLight
+    /* { // SpotLight
         // Set the initial Spotlight position inside the box
         auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,-2), glm::vec3(0,-1,3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
@@ -36,8 +36,19 @@ void initialize_scene( Viewer& viewer )
 
         // Animate the spotlight by adding keyframes for its position*
         spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,5,-6), glm::vec3(0,0,0), Light::base_forward), 0);
-        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,5,-10.25), glm::vec3(0,0,-4.25), Light::base_forward), 10.0);
+        //spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,5,-10.25), glm::vec3(0,0,-2), Light::base_forward), 10.0);
+    } */
+    { // SpotLight
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,4,8), glm::vec3(0,0.2,0.2), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        viewer.addSpotLight(spot_light);
+
+        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
+        viewer.addRenderable(spot_light_renderable);
     }
+
+    //Camera movement
+    viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 1, 3), glm::vec3(0, -0.5, 0), glm::vec3( 0, 1, 0 ) ) );
+
 
     const std::string box_path = "../../models3D/caisse.obj";
     std::string box_texture_path = "../../models3D/crate.jpg";
@@ -49,15 +60,14 @@ void initialize_scene( Viewer& viewer )
 
     read_obj_with_materials(box_path, "../../models3D/", all_positions, all_normals, all_texcoords, materials);
 
-    TexturedLightedMeshRenderablePtr box = std::make_shared<TexturedLightedMeshRenderable>(
-        texShader, box_path, materials[0], box_texture_path);
-    box->setGlobalTransform(glm::mat4(1.0f));
+    TexturedLightedMeshRenderablePtr box = std::make_shared<TexturedLightedMeshRenderable>(texShader, box_path, materials[0], box_texture_path);
+    box->setGlobalTransform(getTranslationMatrix(0, -1, -1));
 
-    viewer.addRenderable(box);
 
     // Keyframe animation for the box movement
-    box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, 0), 0.0);
-    box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, -4.25), 10.0);
+    box->addGlobalTransformKeyframe(getTranslationMatrix(0, -1, -1), 0.0);
+    box->addGlobalTransformKeyframe(getTranslationMatrix(0, -1, -1)*getTranslationMatrix(0, 0, 1), 40.0);
+    viewer.addRenderable(box);
 }
 
 int main() 
