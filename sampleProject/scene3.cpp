@@ -88,6 +88,16 @@ void initialize_scene( Viewer& viewer )
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, 90)), 0.0); 
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, -0)), 4.0);
 
+
+    // Rail
+    const std::string rail_path = "../../models3D/rail/rail.obj";
+    
+    for (int i = -2; i < 25; i++) {
+        MeshRenderablePtr rail = std::make_shared<MeshRenderable>(flatShader, rail_path);
+        rail->setGlobalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,3.6*i));
+        viewer.addRenderable(rail);
+    }
+
 }
 
 int main() 
