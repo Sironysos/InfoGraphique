@@ -16,19 +16,10 @@
 void initialize_scene( Viewer& viewer )
 {
     // In this scene, we will see the train on rails going right in front of us, in our face
-    // Create a shader program
-	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
-        "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-        "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
-	viewer.addShaderProgram( flatShader );
 
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
     viewer.addShaderProgram( texShader );
-
-	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
-	viewer.addShaderProgram(cubeMapShader);
 
 	//Define a shader that encode an illumination model
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 

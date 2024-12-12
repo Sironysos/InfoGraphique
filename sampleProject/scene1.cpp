@@ -9,24 +9,86 @@
 
 void initialize_scene( Viewer& viewer )
 {
-    // In this scene, we will zoom into a hole of the box, 
-    // and then ther will be a train that will pass by from left to right, on rails
-    // and a black rectangle will appear next to the train
-
-    ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
-        "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-        "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
-
-    //Textured shader
-    //    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl","../shaders/textureFragment.glsl");
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
     viewer.addShaderProgram( texShader );
 
-    ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>(
-        "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
-        "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
-    viewer.addShaderProgram(phongShader);
+	//Define a shader that encode an illumination model
+    ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 
+                                                                    "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
+    viewer.addShaderProgram( phongShader );
+
+	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
+
+    
+
+	//Define a transformation
+    glm::mat4 globalTransformation, localTransformation;
+
+	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
+    glm::vec3 ambient = glm::vec3(0,0,0);
+    glm::vec3 diffuse = glm::vec3(1,1,1);
+    glm::vec3 specular = glm::vec3(1,1,1);
+    DirectionalLightPtr light1 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+    dir = glm::normalize(glm::vec3(1,-1,1));
+    ambient = glm::vec3(0,0,0);
+    diffuse = glm::vec3(1,0.9,0.9);
+    specular = glm::vec3(1,0.9,0.9);
+    DirectionalLightPtr light2 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+    dir = glm::normalize(glm::vec3(0,1,0));
+    ambient = glm::vec3(0,0,0);
+    diffuse = glm::vec3(0.5,0.3,0.3);
+    specular = glm::vec3(0.5,0.3,0.3);
+    DirectionalLightPtr light3 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+
+    viewer.addDirectionalLight(light1);
+    viewer.addDirectionalLight(light2);
+    viewer.addDirectionalLight(light3);
+
+
+	//Rusty train
+	const std::string traing_path = "../../models3D/un_oldTrain.obj";
+    const std::string train_texture_path = "../../models3D/metal.jpg";
+
+
+    std::vector<std::vector<glm::vec3>> all_positions;
+    std::vector<std::vector<glm::vec3>> all_normals;
+    std::vector<std::vector<glm::vec2>> all_texcoords;
+    std::vector<MaterialPtr> materials;
+
+    read_obj_with_materials(traing_path, "../../models3D/", all_positions, all_normals, all_texcoords, materials);
+
+    TexturedLightedMeshRenderablePtr train = std::make_shared<TexturedLightedMeshRenderable>(texShader, traing_path, materials[0], train_texture_path);
+	
+    viewer.addRenderable(train);
+	// Keyframe animation for the wall movement
+    train->addGlobalTransformKeyframe(getTranslationMatrix(230, 0, -4.5) * getRotationMatrix(M_PI * 0.5, glm::vec3(0, 1, 0))*getScaleMatrix(0.25,0.25,0.25), 0.0);
+    train->addGlobalTransformKeyframe(getTranslationMatrix(-245, 0, -4.5) * getRotationMatrix(M_PI * 0.5, glm::vec3(0, 1, 0))*getScaleMatrix(0.25,0.25,0.25), 30.0);
+
+
+    // Rail
+    const std::string rail_path = "../../models3D/rail/rail.obj";
+    std::string rail_texture_path = "../../models3D/rail/woodAndMetal.jpg";
+
+
+    std::vector<std::vector<glm::vec3>> all_positions1;
+    std::vector<std::vector<glm::vec3>> all_normals1;
+    std::vector<std::vector<glm::vec2>> all_texcoords1;
+    std::vector<MaterialPtr> materials1;
+
+
+    read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
+    
+    
+    for (int i = 0; i < 5; i++) {
+        TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+        rail->setGlobalTransform(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,-1,3.6*i));
+        viewer.addRenderable(rail);
+        rail->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getTranslationMatrix(0, -1, 3.6*i-0.2), 0.0);
+        rail->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getTranslationMatrix(6, -1, 3.6*i-0.2), 10.0);
+        rail->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getTranslationMatrix(6, -1, 3.6*i-0.2), 30.0);
+
+    }
 
     // Define colors for lights
     glm::vec3 yellow = glm::vec3(1, 1, 0);
@@ -51,15 +113,15 @@ void initialize_scene( Viewer& viewer )
     const std::string box_path = "../../models3D/caisse.obj";
     std::string box_texture_path = "../../models3D/crate.jpg";
 
-    std::vector<std::vector<glm::vec3>> all_positions;
-    std::vector<std::vector<glm::vec3>> all_normals;
-    std::vector<std::vector<glm::vec2>> all_texcoords;
-    std::vector<MaterialPtr> materials;
+    std::vector<std::vector<glm::vec3>> all_positions2;
+    std::vector<std::vector<glm::vec3>> all_normals2;
+    std::vector<std::vector<glm::vec2>> all_texcoords2;
+    std::vector<MaterialPtr> materials2;
 
-    read_obj_with_materials(box_path, "../../models3D/", all_positions, all_normals, all_texcoords, materials);
+    read_obj_with_materials(box_path, "../../models3D/", all_positions2, all_normals2, all_texcoords2, materials2);
 
     TexturedLightedMeshRenderablePtr box = std::make_shared<TexturedLightedMeshRenderable>(
-        texShader, box_path, materials[0], box_texture_path);
+        texShader, box_path, materials2[0], box_texture_path);
     box->setGlobalTransform(glm::mat4(1.0f));
 
     viewer.addRenderable(box);
@@ -74,7 +136,7 @@ void initialize_scene( Viewer& viewer )
 
     //add the black wall to do the transition
     const std::string wall_path = "../../models3D/mur.obj";
-    MeshRenderablePtr wall = std::make_shared<MeshRenderable>(flatShader, wall_path);
+    MeshRenderablePtr wall = std::make_shared<MeshRenderable>(phongShader, wall_path);
     wall->setGlobalTransform(getRotationMatrix(M_PI*0, 0,1,0)*getScaleMatrix(0.1, 0.1, 0.1));
     viewer.addRenderable(wall);
 
