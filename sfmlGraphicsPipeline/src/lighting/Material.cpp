@@ -199,3 +199,12 @@ MaterialPtr Material::Copper()
     float shininess = openGLFactor*0.1;
     return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
+MaterialPtr Material::WhiteRubber()
+{
+    float openGLFactor=128.0;
+    glm::vec3 ambient(0.05,0.05,0.05);
+    glm::vec3 diffuse(0.5,0.5,0.5);
+    glm::vec3 specular(0.7,0.7,0.7);
+    float shininess = openGLFactor*10.0;
+    return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
