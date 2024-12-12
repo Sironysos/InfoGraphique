@@ -94,7 +94,7 @@ void initialize_scene( Viewer& viewer )
     
     for (int i = -2; i < 25; i++) {
         TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
-        rail->setGlobalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,3.6*i));
+        rail->setGlobalTransform(getScaleMatrix(1.5,1.5,1.5)*getRotationMatrix(-M_PI * 0.15, glm::vec3(0, 1, 0))*getTranslationMatrix(0,-1.5,3.6*i));
         viewer.addRenderable(rail);
     }
 
