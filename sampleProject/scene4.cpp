@@ -31,7 +31,7 @@ void initialize_scene( Viewer& viewer )
 
     //Add a 3D frame to the viewer
     FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
-    viewer.addRenderable(frame);
+    //viewer.addRenderable(frame);
 
     //Textured shader
     //    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl","../shaders/textureFragment.glsl");
@@ -39,26 +39,6 @@ void initialize_scene( Viewer& viewer )
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
     viewer.addShaderProgram( texShader );
 
-    /* //Lights
-    glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
-    glm::vec3 ambient = glm::vec3(0,0,0);
-    glm::vec3 diffuse = glm::vec3(1,1,1);
-    glm::vec3 specular = glm::vec3(1,1,1);
-    DirectionalLightPtr light1 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
-    dir = glm::normalize(glm::vec3(1,-1,1));
-    ambient = glm::vec3(0,0,0);
-    diffuse = glm::vec3(1,0.9,0.9);
-    specular = glm::vec3(1,0.9,0.9);
-    DirectionalLightPtr light2 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
-    dir = glm::normalize(glm::vec3(0,1,0));
-    ambient = glm::vec3(0,0,0);
-    diffuse = glm::vec3(0.5,0.3,0.3);
-    specular = glm::vec3(0.5,0.3,0.3);
-    DirectionalLightPtr light3 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
-
-    viewer.addDirectionalLight(light1);
-    viewer.addDirectionalLight(light2);
-    viewer.addDirectionalLight(light3); */
 
     // Add light to the scene
 	glm::vec3 red(0.9,0.3,0.4), green(0.3,0.9,0.4), blue(0.4,0.3,0.9);
@@ -71,95 +51,13 @@ void initialize_scene( Viewer& viewer )
         auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
         viewer.addRenderable(spot_light_renderable);
     }
-
-    /* // Textured cactus
-    viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
-    std::string penguin_mesh_path = "../../models3D/cactus/source/untitled.obj";
-    std::string penguin_texture_path = "../../models3D/cactus/textures/Amigo_03.png";
-
-    std::string penguin_mesh_path2 = "../../models3D/cactus/source/cap.obj";
-
-    std::vector<std::vector<glm::vec3>> all_positions1;
-    std::vector<std::vector<glm::vec3>> all_normals1;
-    std::vector<std::vector<glm::vec2>> all_texcoords1;
-    std::vector<std::vector<unsigned int>> all_indices1;
-    std::vector<MaterialPtr> materials1;
-
-    std::vector<std::vector<glm::vec3>> all_positions2;
-    std::vector<std::vector<glm::vec3>> all_normals2;
-    std::vector<std::vector<glm::vec2>> all_texcoords2;
-    std::vector<std::vector<unsigned int>> all_indices2;
-    std::vector<MaterialPtr> materials2;
-
-    read_obj_with_materials(penguin_mesh_path, "../../models3D/cactus/source/", all_positions1, all_normals1, all_texcoords1, materials1);
-    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials1[0], penguin_texture_path);
-    
-    //penguin->setGlobalTransform(getRotationMatrix(M_PI * 0.5, glm::vec3(0, 0, 1)));
-    viewer.addRenderable(penguin);
-
-    read_obj_with_materials(penguin_mesh_path2, "../../models3D/cactus/source/", all_positions2, all_normals2, all_texcoords2, materials2);
-    TexturedLightedMeshRenderablePtr penguin2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path2, materials2[0], penguin_texture_path);
-    
-    viewer.addRenderable(penguin2); */
-
-    // Add the penguin
-    /* const std::vector<std::string> penguin_paths = {
-        "../../models3D/penguinEileen/beakBot.obj",
-        "../../models3D/penguinEileen/beakTop.obj",
-        "../../models3D/penguinEileen/body.obj",
-        "../../models3D/penguinEileen/eyes.obj",
-        "../../models3D/penguinEileen/footRight.obj",
-        "../../models3D/penguinEileen/footLeft.obj",
-        "../../models3D/penguinEileen/wingRight.obj",
-        "../../models3D/penguinEileen/wingLeft.obj"
-    };
-    const std::vector<std::string> penguin_texture_paths = {
-        "../../models3D/penguinEileen/penguinBodyTex.png",
-        "../../models3D/penguinEileen/sad_eyes.png"
-    }; */
-
-    /* int i = 0;
-    
-    for (const auto& carl : penguin_paths ) {
-        std::vector<std::vector<glm::vec3>> all_positions;
-        std::vector<std::vector<glm::vec3>> all_normals;
-        std::vector<std::vector<glm::vec2>> all_texcoords;
-        std::vector<std::vector<unsigned int>> all_indices;
-        std::vector<MaterialPtr> materials;
-        read_obj_with_materials(carl, "../../models3D/penguinEileen/", all_positions, all_normals, all_texcoords, materials);
-        if (i == 3) {
-            TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, carl, materials[0], penguin_texture_paths[1]);
-            viewer.addRenderable(penguin);
-        }else {
-            TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, carl, materials[0], penguin_texture_paths[0]);
-            viewer.addRenderable(penguin);
-        }
-        i++;
-    } */
-
-    /* const std::string beakBot_path = "../../models3D/penguinEileen/beakBot.obj";
-    const std::string beakTop_path = "../../models3D/penguinEileen/beakTop.obj";
-    const std::string eyes_path = "../../models3D/penguinEileen/eyes.obj";
-    const std::string footR_path = "../../models3D/penguinEileen/footRight.obj";
-    const std::string footL_path = "../../models3D/penguinEileen/footLeft.obj";
-    const std::string wingR_path = "../../models3D/penguinEileen/wingRight.obj";
-    const std::string wingL_path = "../../models3D/penguinEileen/wingLeft.obj";
-    std::string eyes_texture_path = "../../models3D/penguinEileen/sad_eyes.png"; */
-
-    /* const std::string body_path = "../../models3D/penguinEileen/body.obj";
-    std::string body_texture_path = "../../models3D/penguinEileen/penguinBodyTex.png";
-    
-
-    std::vector<std::vector<glm::vec3>> all_positions;
-    std::vector<std::vector<glm::vec3>> all_normals;
-    std::vector<std::vector<glm::vec2>> all_texcoords;
-    std::vector<MaterialPtr> materials;
-    read_obj_with_materials(body_path, "../../models3D/penguinEileen/", all_positions, all_normals, all_texcoords, materials);
-    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader,body_path, materials[0], body_texture_path);
-    viewer.addRenderable(penguin); */
     
     
-    viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+    viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 1.5, 2), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+
+
+
+
     std::string penguin_mesh_path = "../../models3D/penguinEileen/bodyPingoinobj.obj";
     std::string penguin_texture_path = "../../models3D/penguinEileen/pinpoin.PNG";
 
@@ -205,11 +103,9 @@ void initialize_scene( Viewer& viewer )
     
 
 
-    //penguin->setGlobalTransform(getScaleMatrix(0.5,0.5,0.5)*getTranslationMatrix(1,1,0));
-
     // Place the parts of the penguin based on the originParts positions
     glm::vec3 originParts[] = {
-        glm::vec3(0, 0.98319, 0), // BODY
+        glm::vec3(0, 0, 0), // BODY
 
         glm::vec3(0.74143, 0.95372, 0), // WINGS - Left
         glm::vec3(-0.74143, 0.95372, 0), // WINGS - Right
@@ -224,18 +120,18 @@ void initialize_scene( Viewer& viewer )
     };
 
     // Set transforms for each part
-    penguin->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])); // BODY
+    penguin->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
 
-    wingL->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[1])); // Left Wing
-    wingR->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])); // Right Wing
+    wingL->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[1])* getTranslationMatrix(0.5,0.9,-0.8)); // Left Wing
+    wingR->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)); // Right Wing
 
-    eyes->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[3])); // EYES
+    eyes->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[3])* getTranslationMatrix(0.5,0.9,-0.8)); // EYES
 
-    beakTop->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[4])); // BEAK - Top
-    beakBot->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[5])); // BEAK - Bottom
+    beakBot->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[5])* getTranslationMatrix(0.5,0.9,-0.8)); // BEAK - Bottom
+    beakTop->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[4])* getTranslationMatrix(0.5,0.9,-0.8)); // BEAK - Top
 
-    footL->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[6])); // Left Foot
-    footR->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[7])); // Right Foot
+    footL->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[6])* getTranslationMatrix(0.5,0.9,-0.8)); // Left Foot
+    footR->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[7])* getTranslationMatrix(0.5,0.9,-0.8)); // Right Foot
 
 
     viewer.addRenderable(beakBot);
@@ -247,10 +143,6 @@ void initialize_scene( Viewer& viewer )
     viewer.addRenderable(wingL);
     viewer.addRenderable(penguin);
 
-
-
-    
-    //penguin->setGlobalTransform(getRotationMatrix(M_PI * 0.5, glm::vec3(0, 0, 1)));
 
     //lever
 
@@ -278,10 +170,11 @@ void initialize_scene( Viewer& viewer )
 
 int main() 
 {
-    glm::vec4 background_color(0.8,0.8,0.8,1);
+    //glm::vec4 background_color(0.0,0.0,0.0,1);
+	glm::vec4 background_color(0.8,0.8,0.8,1);
 	Viewer viewer(1280,720, background_color);
 	initialize_scene(viewer);
-    viewer.startAnimation();
+	viewer.startAnimation();
 
 	while( viewer.isRunning() )
 	{
