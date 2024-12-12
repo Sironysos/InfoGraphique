@@ -142,6 +142,8 @@ public:
     static MaterialPtr Lever();
 
     static MaterialPtr Gold();
+    
+    static MaterialPtr Copper();
 
 private:
     glm::vec3 m_ambient; /*!< The ambient material vector defines what color this object reflects under ambient lighting. */

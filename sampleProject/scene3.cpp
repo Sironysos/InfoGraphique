@@ -11,6 +11,7 @@
 #include <texturing/CubeMapRenderable.hpp>
 #include <lighting/LightedCubeRenderable.hpp>
 #include <Io.hpp>
+#include <texturing/TexturedLightedMeshRenderable.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
@@ -20,6 +21,10 @@ void initialize_scene( Viewer& viewer )
         "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
         "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram( flatShader );
+
+    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
+    viewer.addShaderProgram( texShader );
 
 	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
@@ -59,30 +64,18 @@ void initialize_scene( Viewer& viewer )
 
 
 	//Rusty train
-	const std::string traing_path = "../../models3D/rustyTrain.obj";
-    const std::string mtl_basepath = "../../models3D/";
+	const std::string traing_path = "../../models3D/oldTrain.obj";
+    const std::string train_texture_path = "../../models3D/rusty.jpg";
 
 
     std::vector<std::vector<glm::vec3>> all_positions;
     std::vector<std::vector<glm::vec3>> all_normals;
     std::vector<std::vector<glm::vec2>> all_texcoords;
-    std::vector<std::vector<unsigned int>> all_indices;
     std::vector<MaterialPtr> materials;
 
-    read_obj_with_materials(traing_path, mtl_basepath, all_positions, all_normals, all_texcoords, materials);
+    read_obj_with_materials(traing_path, "../../models3D/", all_positions, all_normals, all_texcoords, materials);
 
-    int n_object = materials.size();
-    std::vector<glm::vec4> colors;
-
-    LightedMeshRenderablePtr train;
-
-    train = std::make_shared<LightedMeshRenderable>(phongShader, all_positions[0], all_normals[0], colors, materials[0]);
-    for (int i = 1 ; i < n_object ; ++i){
-        LightedMeshRenderablePtr part = std::make_shared<LightedMeshRenderable>(
-        phongShader, all_positions[i], all_normals[i], colors, materials[i]);
-        HierarchicalRenderable::addChild(train, part);
-        
-    }
+    TexturedLightedMeshRenderablePtr train = std::make_shared<TexturedLightedMeshRenderable>(texShader, traing_path, materials[0], train_texture_path);
 	
     viewer.addRenderable(train);
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, 90)), 0.0); 
@@ -91,9 +84,20 @@ void initialize_scene( Viewer& viewer )
 
     // Rail
     const std::string rail_path = "../../models3D/rail/rail.obj";
+    std::string rail_texture_path = "../../models3D/rail/woodAndMetal.jpg";
+
+
+    std::vector<std::vector<glm::vec3>> all_positions1;
+    std::vector<std::vector<glm::vec3>> all_normals1;
+    std::vector<std::vector<glm::vec2>> all_texcoords1;
+    std::vector<MaterialPtr> materials1;
+
+
+    read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
+    
     
     for (int i = -2; i < 25; i++) {
-        MeshRenderablePtr rail = std::make_shared<MeshRenderable>(flatShader, rail_path);
+        TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
         rail->setGlobalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,3.6*i));
         viewer.addRenderable(rail);
     }
