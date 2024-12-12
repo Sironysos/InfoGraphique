@@ -102,23 +102,12 @@ void initialize_scene( Viewer& viewer )
     
     viewer.addRenderable(penguin2);
 
-     //lever
+    //lever
 
     const std::string leverB_path = "../../models3D/lever/leverBody.obj";
     LightedMeshRenderablePtr leverB = std::make_shared<LightedMeshRenderable>(phongShader, leverB_path, Material::bodyLever());
     leverB->setGlobalTransform(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1));
     viewer.addRenderable(leverB);
-    /*
-    const std::string lever_path = "../../models3D/lever/leverLever.obj";
-    LightedMeshRenderablePtr lever = std::make_shared<LightedMeshRenderable>(phongShader, lever_path, Material::Lever());
-    lever->setGlobalTransform(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1));
-
-    // Keyframe animation for the lever movement
-    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1), 0.0);
-    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1), 1.0);
-    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix((cos(0.15*M_PI)-1)/20,(sin(0.15*M_PI))/20,0), 2.0);
-
-    viewer.addRenderable(lever); */
 
     const std::string lever_path = "../../models3D/lever/leverLever.obj";
 
@@ -131,7 +120,6 @@ void initialize_scene( Viewer& viewer )
     // Add keyframes for lever animation
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1), 0.0);
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1), 4.0);
-    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0)), 5.0);
 
     viewer.addRenderable(lever);
 
