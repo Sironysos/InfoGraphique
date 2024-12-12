@@ -180,4 +180,12 @@ MaterialPtr Material::Lever()
     float shininess = openGLFactor*0.078125;
     return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
-
+MaterialPtr Material::Gold()
+{
+    float openGLFactor=128.0;
+    glm::vec3 ambient(0.24725, 0.1995, 0.0745);
+    glm::vec3 diffuse(0.75164, 0.60648, 0.22648);
+    glm::vec3 specular(0.628281, 0.555802, 0.366065);
+    float shininess = openGLFactor*0.4;
+    return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}

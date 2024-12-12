@@ -141,6 +141,8 @@ public:
 
     static MaterialPtr Lever();
 
+    static MaterialPtr Gold();
+
 private:
     glm::vec3 m_ambient; /*!< The ambient material vector defines what color this object reflects under ambient lighting. */
     glm::vec3 m_diffuse; /*!< The diffuse material vector defines the color of the object under diffuse lighting. */
