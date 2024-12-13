@@ -53,6 +53,25 @@ void initialize_scene( Viewer& viewer )
     viewer.addDirectionalLight(light2);
     viewer.addDirectionalLight(light3);
 
+    glm::vec3 white(1,1,1);
+
+    { // SpotLight
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,4,-8), glm::vec3(0,4,-0.2), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        viewer.addSpotLight(spot_light);
+
+        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
+        viewer.addRenderable(spot_light_renderable);
+    }
+
+
+    /* ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+    viewer.addShaderProgram(cubeMapShader);
+    
+    std::string cubemap_dir = "../../sfmlGraphicsPipeline/textures/skybox/";
+    auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
+
+    viewer.addRenderable(cubemap); */
 
 	//Rusty train
 	const std::string traing_path = "../../models3D/oldTrain.obj";
@@ -86,13 +105,16 @@ void initialize_scene( Viewer& viewer )
 
     read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
     
+    TexturedLightedMeshRenderablePtr railo = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+    railo->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,-3.6*2));
     
-    for (int i = -2; i < 25; i++) {
+    for (int i = -1; i < 25; i++) {
         TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
-        rail->setGlobalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,3.6*i));
-        viewer.addRenderable(rail);
+        rail->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,3.6*i));
+        HierarchicalRenderable::addChild(railo, rail);
     }
-
+    railo->setGlobalTransform(getScaleMatrix(1.6,1.6,1.6)*getTranslationMatrix(0,0,2));
+    viewer.addRenderable(railo);
 }
 
 int main() 

@@ -33,10 +33,6 @@ void initialize_scene( Viewer& viewer )
 
 	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
 
-    
-
-	//Define a transformation
-    glm::mat4 globalTransformation, localTransformation;
 
 	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
     glm::vec3 ambient = glm::vec3(0,0,0);
@@ -58,6 +54,15 @@ void initialize_scene( Viewer& viewer )
     viewer.addDirectionalLight(light2);
     viewer.addDirectionalLight(light3);
 
+    glm::vec3 white(1,1,1);
+
+    { // SpotLight
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,4,-8), glm::vec3(0,0.2,-0.2), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        viewer.addSpotLight(spot_light);
+
+        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
+        viewer.addRenderable(spot_light_renderable);
+    }
 
 	//Rusty train
 	const std::string traing_path = "../../models3D/oldTrain.obj";
@@ -102,8 +107,8 @@ void initialize_scene( Viewer& viewer )
 
 int main() 
 {
-    //glm::vec4 background_color(0.0,0.0,0.0,1);
-	glm::vec4 background_color(0.8,0.8,0.8,1);
+    glm::vec4 background_color(0.0,0.0,0.0,1);
+	//glm::vec4 background_color(0.8,0.8,0.8,1);
 	Viewer viewer(1280,720, background_color);
 	initialize_scene(viewer);
 	viewer.startAnimation();
