@@ -1,15 +1,11 @@
 #include <Viewer.hpp>
 #include <ShaderProgram.hpp>
-#include <CylinderMeshRenderable.hpp>
-#include <MeshRenderable.hpp>
 #include <FrameRenderable.hpp>
-#include <MeshRenderable.hpp>
 #include <Utils.hpp>
 #include <lighting/SpotLightRenderable.hpp>
 #include <lighting/DirectionalLightRenderable.hpp>
 #include <lighting/LightedMeshRenderable.hpp>
 #include <texturing/CubeMapRenderable.hpp>
-#include <lighting/LightedCubeRenderable.hpp>
 #include <Io.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
 #include <texturing/TexturedCubeRenderable.hpp>
@@ -26,14 +22,7 @@ void initialize_scene( Viewer& viewer )
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
     viewer.addShaderProgram( phongShader );
-
-	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
-
     
-
-	//Define a transformation
-    glm::mat4 globalTransformation, localTransformation;
-
 	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
     glm::vec3 ambient = glm::vec3(0,0,0);
     glm::vec3 diffuse = glm::vec3(1,1,1);
