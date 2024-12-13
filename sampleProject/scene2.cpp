@@ -192,9 +192,154 @@ void initialize_scene( Viewer& viewer )
     HierarchicalRenderable::addChild(penguin, wingR);
     HierarchicalRenderable::addChild(penguin, wingL);
 
-    penguin->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0)));
+    penguin->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(-7,-3.5,-4));
 
     viewer.addRenderable(penguin);
+
+    //lever
+
+    const std::string leverB_path = "../../models3D/lever/leverBody.obj";
+    LightedMeshRenderablePtr leverB = std::make_shared<LightedMeshRenderable>(phongShader, leverB_path, Material::bodyLever());
+    
+    const std::string lever_path = "../../models3D/lever/leverLever.obj";
+
+    // Create the lever object with a material and shader
+    LightedMeshRenderablePtr lever = std::make_shared<LightedMeshRenderable>(phongShader, lever_path, Material::Lever());
+
+    HierarchicalRenderable::addChild(lever, leverB);
+    
+    // Initial position and orientation of the lever
+    lever->setGlobalTransform(getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(4, -4.5, -9));
+
+    viewer.addRenderable(lever);
+
+    //Penguin 1
+    std::string penguin1_texture_path = "../../models3D/penguinEileen/papier.jpg";
+    TexturedLightedMeshRenderablePtr penguin1 = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin1_texture_path);
+    LightedMeshRenderablePtr beakBot1 = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Gold());
+    LightedMeshRenderablePtr beakTop1 = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Gold());
+    LightedMeshRenderablePtr eyes1 = std::make_shared<LightedMeshRenderable>(phongShader, eyes_path, Material::Emerald());   
+    LightedMeshRenderablePtr footR1 = std::make_shared<LightedMeshRenderable>(phongShader, footR_path, Material::Gold());  
+    LightedMeshRenderablePtr footL1 = std::make_shared<LightedMeshRenderable>(phongShader, footL_path, Material::Gold());  
+    LightedMeshRenderablePtr wingR1 = std::make_shared<LightedMeshRenderable>(phongShader, wingR_path, Material::Pearl()); 
+    LightedMeshRenderablePtr wingL1 = std::make_shared<LightedMeshRenderable>(phongShader, wingL_path, Material::Pearl());
+    
+    // Set transforms for each part
+    penguin1->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
+    wingL1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
+    wingR1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
+    eyes1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
+    beakBot1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
+    beakTop1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
+    footL1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
+    footR1->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+
+    HierarchicalRenderable::addChild(penguin1, beakBot1);
+    HierarchicalRenderable::addChild(penguin1, beakTop1);
+    HierarchicalRenderable::addChild(penguin1, eyes1);
+    HierarchicalRenderable::addChild(penguin1, footR1);
+    HierarchicalRenderable::addChild(penguin1, footL1);
+    HierarchicalRenderable::addChild(penguin1, wingR1);
+    HierarchicalRenderable::addChild(penguin1, wingL1);
+
+    penguin1->setGlobalTransform(getTranslationMatrix(0,0,0));
+    viewer.addRenderable(penguin1);
+
+    //Penguin 2
+    std::string penguin2_texture_path = "../../models3D/penguinEileen/herbe.png";
+    TexturedLightedMeshRenderablePtr penguin2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin2_texture_path);
+    LightedMeshRenderablePtr beakBot2 = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Gold());
+    LightedMeshRenderablePtr beakTop2 = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Gold());
+    LightedMeshRenderablePtr eyes2 = std::make_shared<LightedMeshRenderable>(phongShader, eyes_path, Material::Copper());   
+    LightedMeshRenderablePtr footR2 = std::make_shared<LightedMeshRenderable>(phongShader, footR_path, Material::Gold());  
+    LightedMeshRenderablePtr footL2 = std::make_shared<LightedMeshRenderable>(phongShader, footL_path, Material::Gold());  
+    LightedMeshRenderablePtr wingR2 = std::make_shared<LightedMeshRenderable>(phongShader, wingR_path, Material::Pearl()); 
+    LightedMeshRenderablePtr wingL2 = std::make_shared<LightedMeshRenderable>(phongShader, wingL_path, Material::Pearl());
+    
+    // Set transforms for each part
+    penguin2->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
+    wingL2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
+    wingR2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
+    eyes2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
+    beakBot2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
+    beakTop2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
+    footL2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
+    footR2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+
+    HierarchicalRenderable::addChild(penguin2, beakBot2);
+    HierarchicalRenderable::addChild(penguin2, beakTop2);
+    HierarchicalRenderable::addChild(penguin2, eyes2);
+    HierarchicalRenderable::addChild(penguin2, footR2);
+    HierarchicalRenderable::addChild(penguin2, footL2);
+    HierarchicalRenderable::addChild(penguin2, wingR2);
+    HierarchicalRenderable::addChild(penguin2, wingL2);
+
+    penguin2->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(1,1,1));
+    viewer.addRenderable(penguin2);
+
+    //Penguin 3
+    std::string penguin3_texture_path = "../../models3D/penguinEileen/gold.png";
+    TexturedLightedMeshRenderablePtr penguin3 = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin3_texture_path);
+    LightedMeshRenderablePtr beakBot3 = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Gold());
+    LightedMeshRenderablePtr beakTop3 = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Gold());
+    LightedMeshRenderablePtr eyes3 = std::make_shared<LightedMeshRenderable>(phongShader, eyes_path, Material::Emerald());   
+    LightedMeshRenderablePtr footR3 = std::make_shared<LightedMeshRenderable>(phongShader, footR_path, Material::Gold());  
+    LightedMeshRenderablePtr footL3 = std::make_shared<LightedMeshRenderable>(phongShader, footL_path, Material::Gold());  
+    LightedMeshRenderablePtr wingR3 = std::make_shared<LightedMeshRenderable>(phongShader, wingR_path, Material::Pearl()); 
+    LightedMeshRenderablePtr wingL3 = std::make_shared<LightedMeshRenderable>(phongShader, wingL_path, Material::Pearl());
+    
+    // Set transforms for each part
+    penguin3->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
+    wingL3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
+    wingR3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
+    eyes3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
+    beakBot3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
+    beakTop3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
+    footL3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
+    footR3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+
+    HierarchicalRenderable::addChild(penguin3, beakBot3);
+    HierarchicalRenderable::addChild(penguin3, beakTop3);
+    HierarchicalRenderable::addChild(penguin3, eyes3);
+    HierarchicalRenderable::addChild(penguin3, footR3);
+    HierarchicalRenderable::addChild(penguin3, footL3);
+    HierarchicalRenderable::addChild(penguin3, wingR3);
+    HierarchicalRenderable::addChild(penguin3, wingL3);
+
+    penguin3->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(3,3,3));
+    viewer.addRenderable(penguin3);
+
+    //Penguin 4
+    std::string penguin4_texture_path = "../../models3D/penguinEileen/pink.png";
+    TexturedLightedMeshRenderablePtr penguin4 = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin4_texture_path);
+    LightedMeshRenderablePtr beakBot4 = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Gold());
+    LightedMeshRenderablePtr beakTop4 = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Gold());
+    LightedMeshRenderablePtr eyes4 = std::make_shared<LightedMeshRenderable>(phongShader, eyes_path, Material::WhiteRubber());   
+    LightedMeshRenderablePtr footR4 = std::make_shared<LightedMeshRenderable>(phongShader, footR_path, Material::Gold());  
+    LightedMeshRenderablePtr footL4 = std::make_shared<LightedMeshRenderable>(phongShader, footL_path, Material::Gold());  
+    LightedMeshRenderablePtr wingR4 = std::make_shared<LightedMeshRenderable>(phongShader, wingR_path, Material::Pearl()); 
+    LightedMeshRenderablePtr wingL4 = std::make_shared<LightedMeshRenderable>(phongShader, wingL_path, Material::Pearl());
+    
+    // Set transforms for each part
+    penguin4->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
+    wingL4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
+    wingR4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
+    eyes4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
+    beakBot4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
+    beakTop4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
+    footL4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
+    footR4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+
+    HierarchicalRenderable::addChild(penguin4, beakBot4);
+    HierarchicalRenderable::addChild(penguin4, beakTop4);
+    HierarchicalRenderable::addChild(penguin4, eyes4);
+    HierarchicalRenderable::addChild(penguin4, footR4);
+    HierarchicalRenderable::addChild(penguin4, footL4);
+    HierarchicalRenderable::addChild(penguin4, wingR4);
+    HierarchicalRenderable::addChild(penguin4, wingL4);
+
+    penguin4->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(5,5,5));
+    viewer.addRenderable(penguin4);
 
 }
 
