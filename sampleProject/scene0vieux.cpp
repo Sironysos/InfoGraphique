@@ -1,38 +1,19 @@
 #include <Viewer.hpp>
 #include <ShaderProgram.hpp>
-#include <CylinderMeshRenderable.hpp>
-#include <MeshRenderable.hpp>
-#include <FrameRenderable.hpp>
-#include <MeshRenderable.hpp>
-#include <Utils.hpp>
 #include <lighting/SpotLightRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
-#include <lighting/LightedMeshRenderable.hpp>
-#include <texturing/CubeMapRenderable.hpp>
-#include <lighting/LightedCubeRenderable.hpp>
-#include <Io.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
+#include <Io.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
-    // In this scene, we will see the train on rails going right in front of us, in our face
-    // Create a shader program
-	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
-        "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-        "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
-	viewer.addShaderProgram( flatShader );
-
+    // Shaders
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
-    viewer.addShaderProgram( texShader );
+    viewer.addShaderProgram(texShader);
 
-	//Define a shader that encode an illumination model
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
-    viewer.addShaderProgram( phongShader );
-
-	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
-
+    viewer.addShaderProgram(phongShader);
 
 	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
     glm::vec3 ambient = glm::vec3(0,0,0);
@@ -55,7 +36,6 @@ void initialize_scene( Viewer& viewer )
     viewer.addDirectionalLight(light3);
 
     glm::vec3 white(1,1,1);
-
     { // SpotLight
         auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,4,-8), glm::vec3(0,0.2,-0.2), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
         viewer.addSpotLight(spot_light);
@@ -67,7 +47,6 @@ void initialize_scene( Viewer& viewer )
 	//Rusty train
 	const std::string traing_path = "../../models3D/oldTrain.obj";
     const std::string train_texture_path = "../../models3D/rusty.jpg";
-
 
     std::vector<std::vector<glm::vec3>> all_positions;
     std::vector<std::vector<glm::vec3>> all_normals;
@@ -82,33 +61,27 @@ void initialize_scene( Viewer& viewer )
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.15, glm::vec3(0, 1, 0)) * getTranslationMatrix(glm::vec3(0, 0, 50)), 0.0); 
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.15, glm::vec3(0, 1, 0)) * getTranslationMatrix(glm::vec3(0, 0, -40)), 4.0);
 
-
     // Rail
     const std::string rail_path = "../../models3D/rail/rail.obj";
     std::string rail_texture_path = "../../models3D/rail/woodAndMetal.jpg";
-
 
     std::vector<std::vector<glm::vec3>> all_positions1;
     std::vector<std::vector<glm::vec3>> all_normals1;
     std::vector<std::vector<glm::vec2>> all_texcoords1;
     std::vector<MaterialPtr> materials1;
 
-
     read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
-    
     
     for (int i = -2; i < 25; i++) {
         TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
         rail->setGlobalTransform(getScaleMatrix(1.5,1.5,1.5)*getRotationMatrix(-M_PI * 0.15, glm::vec3(0, 1, 0))*getTranslationMatrix(0,-1.5,3.6*i));
         viewer.addRenderable(rail);
     }
-
 }
 
 int main() 
 {
     glm::vec4 background_color(0.0,0.0,0.0,1);
-	//glm::vec4 background_color(0.8,0.8,0.8,1);
 	Viewer viewer(1280,720, background_color);
 	initialize_scene(viewer);
 	viewer.startAnimation();
@@ -120,6 +93,5 @@ int main()
 		viewer.draw();
 		viewer.display();
 	}	
-
 	return EXIT_SUCCESS;
 }
