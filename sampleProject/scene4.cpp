@@ -91,14 +91,14 @@ void initialize_scene( Viewer& viewer )
     std::string penguin_texture_path = "../../models3D/penguinEileen/pinpoin.PNG";
 
 
-    std::vector<std::vector<glm::vec3>> all_positions1;
-    std::vector<std::vector<glm::vec3>> all_normals1;
-    std::vector<std::vector<glm::vec2>> all_texcoords1;
-    std::vector<MaterialPtr> materials1;
+    std::vector<std::vector<glm::vec3>> all_positions;
+    std::vector<std::vector<glm::vec3>> all_normals;
+    std::vector<std::vector<glm::vec2>> all_texcoords;
+    std::vector<MaterialPtr> materials;
 
 
-    read_obj_with_materials(penguin_mesh_path, "../../models3D/penguinEileen/", all_positions1, all_normals1, all_texcoords1, materials1);
-    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials1[0], penguin_texture_path);
+    read_obj_with_materials(penguin_mesh_path, "../../models3D/penguinEileen/", all_positions, all_normals, all_texcoords, materials);
+    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin_texture_path);
     
     const std::string beakBot_path = "../../models3D/penguinEileen/beakBot.obj";
     const std::string beakTop_path = "../../models3D/penguinEileen/beakTop.obj";
