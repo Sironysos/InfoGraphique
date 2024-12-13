@@ -82,7 +82,7 @@ void initialize_scene( Viewer& viewer )
     } */
     
     
-    viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 1.5, 2), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+    viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 1.5, 2), glm::vec3(0, 1, 0), glm::vec3( 0, 1, 0 ) ) );
 
 
 
