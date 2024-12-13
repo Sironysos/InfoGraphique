@@ -16,14 +16,14 @@
 #include <texturing/CubeMapRenderable.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
 #include <texturing/TexturedCubeRenderable.hpp>
-/* 
+
 #include <dynamics/DynamicSystem.hpp>
 #include <dynamics/EulerExplicitSolver.hpp>
 #include <dynamics/DynamicSystemRenderable.hpp>
 #include <dynamics/ConstantForceField.hpp>
 #include <dynamics/ParticleRenderable.hpp>
 #include <dynamics/DampingForceField.hpp>
-#include <dynamics/ParticleListRenderable.hpp> */
+#include <dynamics/ParticleListRenderable.hpp>
 
 // Helper function to generate a random float between min and max
 float randomFloat(float min, float max) {
@@ -60,7 +60,7 @@ void initialize_scene( Viewer& viewer )
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
     viewer.addShaderProgram( phongShader );
 
-    /* ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+    ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
     viewer.addShaderProgram( flatShader );
 
@@ -83,7 +83,7 @@ void initialize_scene( Viewer& viewer )
 
     //Initialize particle attributes (radius, mass,position , velocity)
     float pr = 0.07, pm = 100.0;
-    glm::vec3 px(5,0.3,40), pv; 
+    glm::vec3 px(0,-3,-1), pv; 
     float particleSpeed = 8.0f;
     std::vector<ParticlePtr> particles(250);
     for (int i=0; i< particles.size(); ++i){
@@ -106,7 +106,7 @@ void initialize_scene( Viewer& viewer )
     ParticleListRenderablePtr particleListRenderable = std::make_shared<ParticleListRenderable>( instancedShader, particles);
     particleListRenderable->setColor(glm::vec4(1,0,0,1));
     HierarchicalRenderable::addChild(systemRenderable, particleListRenderable);
- */
+
     
     //Lights
 	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
@@ -423,10 +423,11 @@ void initialize_scene( Viewer& viewer )
     HierarchicalRenderable::addChild(tcube, railo2);
 
     //deplacement de la scène, pour illusion de mouvement du train
-    tcube->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.5, glm::vec3(0,1,0))*getTranslationMatrix(-40,0,-1), 0.0);
-    tcube->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.5, glm::vec3(0,1,0))*getTranslationMatrix(-1,0,-1), 4.95);
-    tcube->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.35, glm::vec3(0,1,0))*getTranslationMatrix(-1,0,-3), 5.05);
+    tcube->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.35, glm::vec3(0,1,0))*getTranslationMatrix(4,0,-5.3), 0);
     tcube->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.35, glm::vec3(0,1,0))*getTranslationMatrix(30.6,0,-19), 10.0);
+    penguin4->addGlobalTransformKeyframe(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(4,5,-3)*getRotationMatrix(M_PI*0.15, glm::vec3(0,0,1))*getScaleMatrix(1,1,1)*getTranslationMatrix(0,0,0), 0);
+    penguin4->addGlobalTransformKeyframe(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(4,5,-3)*getRotationMatrix(M_PI*0.15, glm::vec3(0,0,1))*getScaleMatrix(1,1,0.2)*getTranslationMatrix(0,0,-4),1);
+    penguin4->addGlobalTransformKeyframe(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(4,5,-3)*getRotationMatrix(M_PI*0.15, glm::vec3(0,0,1))*getScaleMatrix(1,1,0.2)*getTranslationMatrix(0,0,-4),10);
 
     //train
     const std::string traing_path = "../../models3D/un_oldTrain.obj";
