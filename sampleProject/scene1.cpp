@@ -6,6 +6,7 @@
 #include <lighting/LightedMeshRenderable.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
 #include <Io.hpp>
+#include <texturing/CubeMapRenderable.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
@@ -14,8 +15,6 @@ void initialize_scene( Viewer& viewer )
     // and a black rectangle will appear next to the train
 
     //TODO scene 1 : 
-    //rails
-    //train
     //background
 
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
@@ -29,7 +28,14 @@ void initialize_scene( Viewer& viewer )
 
 	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
 
-    
+    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+    viewer.addShaderProgram(cubeMapShader);
+
+    std::string cubemap_dir = "../../models3D/ciel";
+    auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
+
+    viewer.addRenderable(cubemap);
 
 	//Define a transformation
     glm::mat4 globalTransformation, localTransformation;
@@ -89,13 +95,13 @@ void initialize_scene( Viewer& viewer )
     read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
     
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 2; i++) {
         TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
-        rail->setGlobalTransform(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,-1,3.6*i));
+        rail->setGlobalTransform(getRotationMatrix(M_PI * 0.5, glm::vec3(0, 1, 0))*getScaleMatrix(0.5,0.5,0.5)*getTranslationMatrix(0,-1,3.6*i));
         viewer.addRenderable(rail);
-        rail->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getTranslationMatrix(0, -1, 3.6*i-0.2), 0.0);
-        rail->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getTranslationMatrix(6, -1, 3.6*i-0.2), 10.0);
-        rail->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getTranslationMatrix(6, -1, 3.6*i-0.2), 30.0);
+        rail->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getScaleMatrix(0.5,0.5,0.5)*getTranslationMatrix(0, -1.2, 3.6*i-1), 0.0);
+        rail->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getScaleMatrix(0.5,0.5,0.5)*getTranslationMatrix(9, -1.2, 3.6*i-1), 10.0);
+        rail->addGlobalTransformKeyframe(getRotationMatrix(M_PI*0.5,glm::vec3(0,1,0))*getScaleMatrix(0.5,0.5,0.5)*getTranslationMatrix(9, -1.2, 3.6*i-1), 30.0);
 
     }
 
