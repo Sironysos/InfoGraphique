@@ -22,6 +22,11 @@ void initialize_scene( Viewer& viewer )
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
     viewer.addShaderProgram( phongShader );
+
+    //Default shader
+    ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+    viewer.addShaderProgram( flatShader );
     
 	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
     glm::vec3 ambient = glm::vec3(0,0,0);
@@ -54,11 +59,11 @@ void initialize_scene( Viewer& viewer )
 
     //add the black walls to do the eyes opening transition
     const std::string wall_path = "../../models3D/eye.obj";
-    MeshRenderablePtr wall1 = std::make_shared<MeshRenderable>(phongShader, wall_path);
+    MeshRenderablePtr wall1 = std::make_shared<MeshRenderable>(flatShader, wall_path);
     wall1->setGlobalTransform(getTranslationMatrix(0, 3, -4.8));
     viewer.addRenderable(wall1);
 
-    MeshRenderablePtr wall2 = std::make_shared<MeshRenderable>(phongShader, wall_path);
+    MeshRenderablePtr wall2 = std::make_shared<MeshRenderable>(flatShader, wall_path);
     wall2->setGlobalTransform(getTranslationMatrix(0, -3, -4.8)*getRotationMatrix(M_PI*1,0,0,1));
     viewer.addRenderable(wall2);
 
@@ -93,7 +98,6 @@ void initialize_scene( Viewer& viewer )
     std::vector<std::vector<glm::vec2>> all_texcoords1;
     std::vector<MaterialPtr> materials1;
 
-
     read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
     
     //Rails droits
@@ -122,6 +126,75 @@ void initialize_scene( Viewer& viewer )
     auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
     viewer.addRenderable(tcube);
     tcube->setGlobalTransform(getTranslationMatrix(0,-5,0)*getScaleMatrix(1000,1,1000));
+
+    std::string penguin_mesh_path = "../../models3D/penguinEileen/bodyPingoinobj.obj";
+    std::string penguin_texture_path = "../../models3D/penguinEileen/pinpoin.PNG";
+
+    std::vector<std::vector<glm::vec3>> all_positions;
+    std::vector<std::vector<glm::vec3>> all_normals;
+    std::vector<std::vector<glm::vec2>> all_texcoords;
+    std::vector<MaterialPtr> materials;
+
+    read_obj_with_materials(penguin_mesh_path, "../../models3D/penguinEileen/", all_positions, all_normals, all_texcoords, materials);
+    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin_texture_path);
+    
+    const std::string beakBot_path = "../../models3D/penguinEileen/beakBot.obj";
+    const std::string beakTop_path = "../../models3D/penguinEileen/beakTop.obj";
+    const std::string eyes_path = "../../models3D/penguinEileen/eyes.obj";
+    const std::string footR_path = "../../models3D/penguinEileen/footRight.obj";
+    const std::string footL_path = "../../models3D/penguinEileen/footLeft.obj";
+    const std::string wingR_path = "../../models3D/penguinEileen/wingRight.obj";
+    const std::string wingL_path = "../../models3D/penguinEileen/wingLeft.obj";
+
+    LightedMeshRenderablePtr beakBot = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Gold());
+    LightedMeshRenderablePtr beakTop = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Gold());
+    LightedMeshRenderablePtr eyes = std::make_shared<LightedMeshRenderable>(phongShader, eyes_path, Material::Pearl());   
+    LightedMeshRenderablePtr footR = std::make_shared<LightedMeshRenderable>(phongShader, footR_path, Material::Gold());  
+    LightedMeshRenderablePtr footL = std::make_shared<LightedMeshRenderable>(phongShader, footL_path, Material::Gold());  
+    LightedMeshRenderablePtr wingR = std::make_shared<LightedMeshRenderable>(phongShader, wingR_path, Material::Pearl()); 
+    LightedMeshRenderablePtr wingL = std::make_shared<LightedMeshRenderable>(phongShader, wingL_path, Material::Pearl());
+    
+    // Place the parts of the penguin based on the originParts positions
+    glm::vec3 originParts[] = {
+        glm::vec3(0, 0, 0), // BODY
+
+        glm::vec3(0.74143, 0.95372, 0), // WINGS - Left
+        glm::vec3(-0.74143, 0.95372, 0), // WINGS - Right
+
+        glm::vec3(0, 1.25055, 0.658344), // EYES
+
+        glm::vec3(0, 1.11317, 0.626099), // BEAK - Top
+        glm::vec3(0, 0.983957, 0.626099), // BEAK - Bottom
+
+        glm::vec3(0.368973, -0.859886, -0.117778), // FEET - Left
+        glm::vec3(-0.368973, -0.859886, -0.117778), // FEET - Right
+    };
+
+    // Set transforms for each part
+    penguin->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
+
+    wingL->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
+    wingR->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
+
+    eyes->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
+
+    beakBot->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
+    beakTop->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
+
+    footL->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
+    footR->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+
+    HierarchicalRenderable::addChild(penguin, beakBot);
+    HierarchicalRenderable::addChild(penguin, beakTop);
+    HierarchicalRenderable::addChild(penguin, eyes);
+    HierarchicalRenderable::addChild(penguin, footR);
+    HierarchicalRenderable::addChild(penguin, footL);
+    HierarchicalRenderable::addChild(penguin, wingR);
+    HierarchicalRenderable::addChild(penguin, wingL);
+
+    penguin->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0)));
+
+    viewer.addRenderable(penguin);
 
 }
 
