@@ -150,3 +150,16 @@ void ParticleListRenderable::update_instances_data_buffer(){
         instances_data[i] = glm::vec4(m_particles[i]->getPosition(), m_particles[i]->getRadius());
     glcheck(glBufferData(GL_ARRAY_BUFFER, instances_data.size()*sizeof(glm::vec4), instances_data.data(), GL_STREAM_DRAW));
 }
+
+void ParticleListRenderable::setColor(glm::vec4 color){
+    int size=m_colors.size();
+    this->m_colors.clear();
+    for (int i=0; i < size; ++i){
+        m_colors.push_back(color);
+    }
+
+    // Update the color buffer
+    glBindBuffer(GL_ARRAY_BUFFER, m_cBuffer);
+    glBufferData(GL_ARRAY_BUFFER, m_colors.size() * sizeof(glm::vec4), m_colors.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

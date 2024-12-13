@@ -32,6 +32,8 @@ public:
     
     void update_all_buffers();
 
+    void setColor(glm::vec4 color);
+
 
 protected:
     void do_draw();
