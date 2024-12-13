@@ -242,7 +242,7 @@ void initialize_scene( Viewer& viewer )
     HierarchicalRenderable::addChild(penguin1, wingR1);
     HierarchicalRenderable::addChild(penguin1, wingL1);
 
-    penguin1->setGlobalTransform(getTranslationMatrix(0,0,0));
+    penguin1->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(4,0.5,-3));
     viewer.addRenderable(penguin1);
 
     //Penguin 2
@@ -258,13 +258,13 @@ void initialize_scene( Viewer& viewer )
     
     // Set transforms for each part
     penguin2->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
-    wingL2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
-    wingR2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
-    eyes2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
-    beakBot2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
-    beakTop2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
-    footL2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
-    footR2->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+    wingL2->setGlobalTransform(getTranslationMatrix(originParts[1])); // Left Wing
+    wingR2->setGlobalTransform(getTranslationMatrix(originParts[2])); // Right Wing
+    eyes2->setGlobalTransform(getTranslationMatrix(originParts[3])); // EYES
+    beakBot2->setGlobalTransform(getTranslationMatrix(originParts[5])); // BEAK - Bottom
+    beakTop2->setGlobalTransform(getTranslationMatrix(originParts[4])); // BEAK - Top
+    footL2->setGlobalTransform(getTranslationMatrix(originParts[6])); // Left Foot
+    footR2->setGlobalTransform(getTranslationMatrix(originParts[7])); // Right Foot
 
     HierarchicalRenderable::addChild(penguin2, beakBot2);
     HierarchicalRenderable::addChild(penguin2, beakTop2);
@@ -274,7 +274,7 @@ void initialize_scene( Viewer& viewer )
     HierarchicalRenderable::addChild(penguin2, wingR2);
     HierarchicalRenderable::addChild(penguin2, wingL2);
 
-    penguin2->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(1,1,1));
+    penguin2->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(6,0.5,-3));
     viewer.addRenderable(penguin2);
 
     //Penguin 3
@@ -290,13 +290,13 @@ void initialize_scene( Viewer& viewer )
     
     // Set transforms for each part
     penguin3->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
-    wingL3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
-    wingR3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
-    eyes3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
-    beakBot3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
-    beakTop3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
-    footL3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
-    footR3->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+    wingL3->setGlobalTransform(getTranslationMatrix(originParts[1])); // Left Wing
+    wingR3->setGlobalTransform(getTranslationMatrix(originParts[2])); // Right Wing
+    eyes3->setGlobalTransform(getTranslationMatrix(originParts[3])); // EYES
+    beakBot3->setGlobalTransform(getTranslationMatrix(originParts[5])); // BEAK - Bottom
+    beakTop3->setGlobalTransform(getTranslationMatrix(originParts[4])); // BEAK - Top
+    footL3->setGlobalTransform(getTranslationMatrix(originParts[6])); // Left Foot
+    footR3->setGlobalTransform(getTranslationMatrix(originParts[7])); // Right Foot
 
     HierarchicalRenderable::addChild(penguin3, beakBot3);
     HierarchicalRenderable::addChild(penguin3, beakTop3);
@@ -306,7 +306,7 @@ void initialize_scene( Viewer& viewer )
     HierarchicalRenderable::addChild(penguin3, wingR3);
     HierarchicalRenderable::addChild(penguin3, wingL3);
 
-    penguin3->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(3,3,3));
+    penguin3->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(8,0.5,-3));
     viewer.addRenderable(penguin3);
 
     //Penguin 4
@@ -322,13 +322,13 @@ void initialize_scene( Viewer& viewer )
     
     // Set transforms for each part
     penguin4->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
-    wingL4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
-    wingR4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
-    eyes4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
-    beakBot4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
-    beakTop4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
-    footL4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
-    footR4->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+    wingL4->setGlobalTransform(getTranslationMatrix(originParts[1])); // Left Wing
+    wingR4->setGlobalTransform(getTranslationMatrix(originParts[2])); // Right Wing
+    eyes4->setGlobalTransform(getTranslationMatrix(originParts[3])); // EYES
+    beakBot4->setGlobalTransform(getTranslationMatrix(originParts[5])); // BEAK - Bottom
+    beakTop4->setGlobalTransform(getTranslationMatrix(originParts[4])); // BEAK - Top
+    footR4->setGlobalTransform(getTranslationMatrix(originParts[7])); // Right Foot
+    footL4->setGlobalTransform(getTranslationMatrix(originParts[6])); // Left Foot
 
     HierarchicalRenderable::addChild(penguin4, beakBot4);
     HierarchicalRenderable::addChild(penguin4, beakTop4);
@@ -338,7 +338,7 @@ void initialize_scene( Viewer& viewer )
     HierarchicalRenderable::addChild(penguin4, wingR4);
     HierarchicalRenderable::addChild(penguin4, wingL4);
 
-    penguin4->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getTranslationMatrix(5,5,5));
+    penguin4->setGlobalTransform(getRotationMatrix(M_PI, glm::vec3(0,1,0))*getRotationMatrix(M_PI*0.5, glm::vec3(-1,0,0))*getTranslationMatrix(4,5,-3)*getRotationMatrix(M_PI*0.15, glm::vec3(0,0,1)));
     viewer.addRenderable(penguin4);
 
 }
