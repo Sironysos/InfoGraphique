@@ -248,8 +248,8 @@ void initialize_scene( Viewer& viewer )
     //Penguin 2
     std::string penguin2_texture_path = "../../models3D/penguinEileen/herbe.png";
     TexturedLightedMeshRenderablePtr penguin2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin2_texture_path);
-    LightedMeshRenderablePtr beakBot2 = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Gold());
-    LightedMeshRenderablePtr beakTop2 = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Gold());
+    LightedMeshRenderablePtr beakBot2 = std::make_shared<LightedMeshRenderable>(phongShader, beakBot_path, Material::Copper());
+    LightedMeshRenderablePtr beakTop2 = std::make_shared<LightedMeshRenderable>(phongShader, beakTop_path, Material::Copper());
     LightedMeshRenderablePtr eyes2 = std::make_shared<LightedMeshRenderable>(phongShader, eyes_path, Material::Copper());   
     LightedMeshRenderablePtr footR2 = std::make_shared<LightedMeshRenderable>(phongShader, footR_path, Material::Gold());  
     LightedMeshRenderablePtr footL2 = std::make_shared<LightedMeshRenderable>(phongShader, footL_path, Material::Gold());  
