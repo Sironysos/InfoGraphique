@@ -13,6 +13,7 @@
 #include <lighting/DirectionalLightRenderable.hpp>
 #include <lighting/LightedMeshRenderable.hpp>
 #include <lighting/LightedCubeRenderable.hpp>
+#include <texturing/TexturedCubeRenderable.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
@@ -38,31 +39,50 @@ void initialize_scene( Viewer& viewer )
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
     viewer.addShaderProgram( texShader );
 
-    // Add light to the scene
-	glm::vec3 red(0.9,0.3,0.4), green(0.3,0.9,0.4), blue(0.4,0.3,0.9);
-	glm::vec3 white(1,1,1);
-	glm::vec3 leafGreen(0,1,0);
-	{ // SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
-        viewer.addSpotLight(spot_light);
+    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+    viewer.addShaderProgram(cubeMapShader);
 
-        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
-        viewer.addRenderable(spot_light_renderable);
-    }
+    std::string cubemap_dir = "../../models3D/ciel";
+    auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
 
-    viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+    viewer.addRenderable(cubemap);
+
+
+    glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
+    glm::vec3 ambient = glm::vec3(0,0,0);
+    glm::vec3 diffuse = glm::vec3(1,1,1);
+    glm::vec3 specular = glm::vec3(1,1,1);
+    DirectionalLightPtr light1 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+    dir = glm::normalize(glm::vec3(1,-1,1));
+    ambient = glm::vec3(0,0,0);
+    diffuse = glm::vec3(1,0.9,0.9);
+    specular = glm::vec3(1,0.9,0.9);
+    DirectionalLightPtr light2 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+    dir = glm::normalize(glm::vec3(0,1,0));
+    ambient = glm::vec3(0,0,0);
+    diffuse = glm::vec3(0.5,0.3,0.3);
+    specular = glm::vec3(0.5,0.3,0.3);
+    DirectionalLightPtr light3 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+
+    viewer.addDirectionalLight(light1);
+    viewer.addDirectionalLight(light2);
+    viewer.addDirectionalLight(light3);
+
+    viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 1.5, 2), glm::vec3(0, 1, 0), glm::vec3( 0, 1, 0 ) ) );
+
     std::string penguin_mesh_path = "../../models3D/penguinEileen/bodyPingoinobj.obj";
     std::string penguin_texture_path = "../../models3D/penguinEileen/pinpoin.PNG";
 
 
-    std::vector<std::vector<glm::vec3>> all_positions1;
-    std::vector<std::vector<glm::vec3>> all_normals1;
-    std::vector<std::vector<glm::vec2>> all_texcoords1;
-    std::vector<MaterialPtr> materials1;
+    std::vector<std::vector<glm::vec3>> all_positions;
+    std::vector<std::vector<glm::vec3>> all_normals;
+    std::vector<std::vector<glm::vec2>> all_texcoords;
+    std::vector<MaterialPtr> materials;
 
 
-    read_obj_with_materials(penguin_mesh_path, "../../models3D/penguinEileen/", all_positions1, all_normals1, all_texcoords1, materials1);
-    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials1[0], penguin_texture_path);
+    read_obj_with_materials(penguin_mesh_path, "../../models3D/penguinEileen/", all_positions, all_normals, all_texcoords, materials);
+    TexturedLightedMeshRenderablePtr penguin = std::make_shared<TexturedLightedMeshRenderable>(texShader, penguin_mesh_path, materials[0], penguin_texture_path);
     
     const std::string beakBot_path = "../../models3D/penguinEileen/beakBot.obj";
     const std::string beakTop_path = "../../models3D/penguinEileen/beakTop.obj";
@@ -115,29 +135,31 @@ void initialize_scene( Viewer& viewer )
     // Set transforms for each part
     penguin->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[0])* getTranslationMatrix(0.5,0.9,-0.8)); // BODY
 
-    wingL->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[1])* getTranslationMatrix(0.5,0.9,-0.8)); // Left Wing
-    wingR->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)); // Right Wing
+    wingL->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[1])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Wing
+    wingR->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[2])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Wing
 
-    eyes->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[3])* getTranslationMatrix(0.5,0.9,-0.8)); // EYES
+    eyes->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[3])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // EYES
 
-    beakBot->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[5])* getTranslationMatrix(0.5,0.9,-0.8)); // BEAK - Bottom
-    beakTop->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[4])* getTranslationMatrix(0.5,0.9,-0.8)); // BEAK - Top
+    beakBot->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) *  */getTranslationMatrix(originParts[5])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Bottom
+    beakTop->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[4])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // BEAK - Top
 
-    footL->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[6])* getTranslationMatrix(0.5,0.9,-0.8)); // Left Foot
-    footR->setGlobalTransform(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[7])* getTranslationMatrix(0.5,0.9,-0.8)); // Right Foot
+    footL->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[6])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Left Foot
+    footR->setGlobalTransform(/* getScaleMatrix(0.5, 0.5, 0.5) * */ getTranslationMatrix(originParts[7])/* * getTranslationMatrix(0.5,0.9,-0.8) */); // Right Foot
+
+    HierarchicalRenderable::addChild(penguin, beakBot);
+    HierarchicalRenderable::addChild(penguin, beakTop);
+    HierarchicalRenderable::addChild(penguin, eyes);
+    HierarchicalRenderable::addChild(penguin, footR);
+    HierarchicalRenderable::addChild(penguin, footL);
+    HierarchicalRenderable::addChild(penguin, wingR);
+    HierarchicalRenderable::addChild(penguin, wingL);
 
     //Animate de right wing
-    wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8), 0.0);
-    wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 0, 1))*getTranslationMatrix(glm::vec3(0, 0, 0.5)), 2.0);
-    wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 0, 1))*getTranslationMatrix(glm::vec3(0, 0, 0.5)), 3.0);
+    wingR->addGlobalTransformKeyframe(getTranslationMatrix(originParts[2]), 0.0);
+    wingR->addGlobalTransformKeyframe(getTranslationMatrix(originParts[2])*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 0, 1))*getTranslationMatrix(glm::vec3(0, 0, 0.5)), 2.0);
+    wingR->addGlobalTransformKeyframe(getTranslationMatrix(originParts[2])*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 0, 1))*getTranslationMatrix(glm::vec3(0, 0, 0.5)), 3.0);
 
-    viewer.addRenderable(beakBot);
-    viewer.addRenderable(beakTop);
-    viewer.addRenderable(eyes);
-    viewer.addRenderable(footR);
-    viewer.addRenderable(footL);
     viewer.addRenderable(wingR);
-    viewer.addRenderable(wingL);
     viewer.addRenderable(penguin);
 
     //lever
@@ -158,12 +180,38 @@ void initialize_scene( Viewer& viewer )
     // Add keyframes for lever animation
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1), 0.0);
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1), 0.5);
-        lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0)), 2.0);
+    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0)), 2.0);
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0)), 3.0);
 
     viewer.addRenderable(lever);
 
+    auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
+    viewer.addRenderable(tcube);
+    tcube->setGlobalTransform(getTranslationMatrix(0,-0.5,0)*getScaleMatrix(60,1,60));
 
+
+    // Rail
+    const std::string rail_path = "../../models3D/rail/rail.obj";
+    std::string rail_texture_path = "../../models3D/rail/woodAndMetal.jpg";
+
+
+    std::vector<std::vector<glm::vec3>> all_positions1;
+    std::vector<std::vector<glm::vec3>> all_normals1;
+    std::vector<std::vector<glm::vec2>> all_texcoords1;
+    std::vector<MaterialPtr> materials1;
+
+    read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
+    
+    TexturedLightedMeshRenderablePtr railo = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+    railo->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix(0,-1,-3.6*2));
+    
+    for (int i = -1; i < 25; i++) {
+        TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+        rail->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix(0,-1,3.6*i));
+        HierarchicalRenderable::addChild(railo, rail);
+    }
+    railo->setGlobalTransform(getScaleMatrix(1.6,1.6,1.6)*getTranslationMatrix(0,0,2));
+    viewer.addRenderable(railo);
 }
 
 int main() 

@@ -200,7 +200,7 @@ void initialize_scene( Viewer& viewer )
 
     viewer.addRenderable(lever);
 
-        auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
+    auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
     viewer.addRenderable(tcube);
     tcube->setGlobalTransform(getTranslationMatrix(0,-0.5,0)*getScaleMatrix(60,1,60));
 
