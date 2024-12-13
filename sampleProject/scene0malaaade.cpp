@@ -1,12 +1,7 @@
 #include <Viewer.hpp>
 #include <ShaderProgram.hpp>
-#include <CylinderMeshRenderable.hpp>
 #include <MeshRenderable.hpp>
-#include <FrameRenderable.hpp>
-#include <MeshRenderable.hpp>
-#include <Utils.hpp>
 #include <lighting/SpotLightRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
 #include <lighting/LightedMeshRenderable.hpp>
 #include <lighting/LightedCubeRenderable.hpp>
 
@@ -22,7 +17,6 @@ void initialize_scene( Viewer& viewer )
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
     viewer.addShaderProgram( phongShader );
-
 
 	// Add light to the scene
 	glm::vec3 maladWhite(1,0.933,0.64);
@@ -59,9 +53,6 @@ void initialize_scene( Viewer& viewer )
 	
 	lighted_cube->setGlobalTransform(glm::mat4(1.0)*getRotationMatrix(-M_PI*0.55, glm::vec3(1,0,0))*getTranslationMatrix(glm::vec3(0,0,-2)));
     lighted_cube->setLocalTransform(getScaleMatrix(50,.2,50)*getTranslationMatrix(0,0,0));
-
-
-
 }
 
 int main() 
@@ -78,6 +69,5 @@ int main()
 		viewer.draw();
 		viewer.display();
 	}	
-
 	return EXIT_SUCCESS;
 }
