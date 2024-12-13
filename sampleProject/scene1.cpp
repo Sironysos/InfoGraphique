@@ -146,9 +146,6 @@ void initialize_scene( Viewer& viewer )
     box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, -4.25), 10.0);
     box->addGlobalTransformKeyframe(getTranslationMatrix(0, 0, -4.25), 30.0);
 
-    //add the train
-    //TODO : add the train
-
     //add the black wall to do the transition
     const std::string wall_path = "../../models3D/mur.obj";
     MeshRenderablePtr wall = std::make_shared<MeshRenderable>(phongShader, wall_path);
