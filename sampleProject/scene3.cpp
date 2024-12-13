@@ -43,16 +43,6 @@ void initialize_scene( Viewer& viewer )
     viewer.addDirectionalLight(light2);
     viewer.addDirectionalLight(light3);
 
-    glm::vec3 white(1,1,1);
-
-    { // SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,4,-8), glm::vec3(0,4,-0.2), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
-        viewer.addSpotLight(spot_light);
-
-        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
-        viewer.addRenderable(spot_light_renderable);
-    }
-
 
     ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
@@ -105,6 +95,7 @@ void initialize_scene( Viewer& viewer )
     }
     railo->setGlobalTransform(getScaleMatrix(1.6,1.6,1.6)*getTranslationMatrix(0,0,2));
     viewer.addRenderable(railo);
+
 
     auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
     viewer.addRenderable(tcube);
