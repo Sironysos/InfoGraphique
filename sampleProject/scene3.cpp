@@ -12,6 +12,7 @@
 #include <lighting/LightedCubeRenderable.hpp>
 #include <Io.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
+#include <texturing/TexturedCubeRenderable.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
@@ -64,18 +65,18 @@ void initialize_scene( Viewer& viewer )
     }
 
 
-    /* ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
     viewer.addShaderProgram(cubeMapShader);
-    
-    std::string cubemap_dir = "../../sfmlGraphicsPipeline/textures/skybox/";
+
+    std::string cubemap_dir = "../../models3D/ciel";
     auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
 
-    viewer.addRenderable(cubemap); */
+    viewer.addRenderable(cubemap);
 
 	//Rusty train
-	const std::string traing_path = "../../models3D/oldTrain.obj";
-    const std::string train_texture_path = "../../models3D/rusty.jpg";
+	const std::string traing_path = "../../models3D/un_oldTrain.obj";
+    const std::string train_texture_path = "../../models3D/metal.jpg";
 
 
     std::vector<std::vector<glm::vec3>> all_positions;
@@ -88,8 +89,8 @@ void initialize_scene( Viewer& viewer )
     TexturedLightedMeshRenderablePtr train = std::make_shared<TexturedLightedMeshRenderable>(texShader, traing_path, materials[0], train_texture_path);
 	
     viewer.addRenderable(train);
-	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, 90)), 0.0); 
-	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, -0)), 4.0);
+	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, 90)), 0.0); 
+	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, -0)), 4.0);
 
 
     // Rail
@@ -106,15 +107,20 @@ void initialize_scene( Viewer& viewer )
     read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
     
     TexturedLightedMeshRenderablePtr railo = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
-    railo->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,-3.6*2));
+    railo->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix(0,-1,-3.6*2));
     
     for (int i = -1; i < 25; i++) {
         TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
-        rail->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.25, glm::vec3(1, 0, 0))*getTranslationMatrix(0,0,3.6*i));
+        rail->setLocalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix(0,-1,3.6*i));
         HierarchicalRenderable::addChild(railo, rail);
     }
     railo->setGlobalTransform(getScaleMatrix(1.6,1.6,1.6)*getTranslationMatrix(0,0,2));
     viewer.addRenderable(railo);
+
+    auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
+    viewer.addRenderable(tcube);
+    tcube->setGlobalTransform(getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix(0,-5,0)*getScaleMatrix(1000,1,1000));
+
 }
 
 int main() 
