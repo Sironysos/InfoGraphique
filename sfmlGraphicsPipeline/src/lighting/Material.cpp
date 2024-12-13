@@ -208,3 +208,13 @@ MaterialPtr Material::WhiteRubber()
     float shininess = openGLFactor*10.0;
     return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
+
+MaterialPtr Material::Ruby()
+{
+    float openGLFactor=128.0;
+    glm::vec3 ambient(0.1745, 0.01175, 0.01175);
+    glm::vec3 diffuse(0.61424, 0.04136, 0.04136);
+    glm::vec3 specular(0.727811, 0.626959, 0.626959);
+    float shininess = openGLFactor*0.6;
+    return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
