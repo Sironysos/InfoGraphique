@@ -14,6 +14,9 @@
 #include <lighting/DirectionalLightRenderable.hpp>
 #include <lighting/LightedMeshRenderable.hpp>
 #include <lighting/LightedCubeRenderable.hpp>
+#include <texturing/TexturedCubeRenderable.hpp>
+
+
 
 void initialize_scene( Viewer& viewer )
 {
@@ -32,50 +35,53 @@ void initialize_scene( Viewer& viewer )
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
     viewer.addShaderProgram( phongShader );
 
-    /* //Add a 3D frame to the viewer
-    FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
-    viewer.addRenderable(frame); */
-
     //Textured shader
     //    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl","../shaders/textureFragment.glsl");
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
     viewer.addShaderProgram( texShader );
 
+    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+    viewer.addShaderProgram(cubeMapShader);
+
+    std::string cubemap_dir = "../../models3D/ciel";
+    auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
+    viewer.addRenderable(cubemap);
+
     // Add light to the scene
-	glm::vec3 red(0.9,0.3,0.4), green(0.3,0.9,0.4), blue(0.4,0.3,0.9);
-	glm::vec3 white(1,1,1);
-	glm::vec3 leafGreen(0,1,0);
-	{ // SpotLight
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-1), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
-        viewer.addSpotLight(spot_light);
+	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
+    glm::vec3 ambient = glm::vec3(0,0,0);
+    glm::vec3 diffuse = glm::vec3(1,1,1);
+    glm::vec3 specular = glm::vec3(1,1,1);
+    DirectionalLightPtr light1 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+    dir = glm::normalize(glm::vec3(1,-1,1));
+    ambient = glm::vec3(0,0,0);
+    diffuse = glm::vec3(1,0.9,0.9);
+    specular = glm::vec3(1,0.9,0.9);
+    DirectionalLightPtr light2 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
+    dir = glm::normalize(glm::vec3(0,1,0));
+    ambient = glm::vec3(0,0,0);
+    diffuse = glm::vec3(0.5,0.3,0.3);
+    specular = glm::vec3(0.5,0.3,0.3);
+    DirectionalLightPtr light3 = std::make_shared<DirectionalLight>(dir, ambient, diffuse, specular);
 
-        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
-        viewer.addRenderable(spot_light_renderable);
-    }
+    viewer.addDirectionalLight(light1);
+    viewer.addDirectionalLight(light2);
+    viewer.addDirectionalLight(light3);
 
-    //TODO : add a spotlight following the pannel
-   /* { // SpotLight
-        // Set the initial Spotlight position inside the box
-        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,3,2), glm::vec3(0,-1,-3), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
-        viewer.addSpotLight(spot_light);
+    viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 1, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+    
+    auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
+    viewer.addRenderable(tcube);
+    tcube->setGlobalTransform(getTranslationMatrix(0,-0.5,0)*getScaleMatrix(60,1,60));
 
-        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
-        viewer.addRenderable(spot_light_renderable);
+    tcube->addLocalTransformKeyframe(getTranslationMatrix(0,-0.5,0)*getScaleMatrix(60,1,60), 0.0);
+    tcube->addLocalTransformKeyframe(getTranslationMatrix(0,-0.5,0)*getScaleMatrix(60,1,60), 10.0);
 
-        spot_light_renderable->setLocalTransform(getScaleMatrix(0.1, 0.1, 0.1));
-
-        // Animate the spotlight by adding keyframes for its position*
-        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,3,2), glm::vec3(0,0,0), Light::base_forward), 0);
-        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,3,2), glm::vec3(0,0,0), Light::base_forward), 3);
-        spot_light->addGlobalTransformKeyframe(lookAtModel(glm::vec3(0,3,-5), glm::vec3(0,0,0), Light::base_forward), 10.0);
-    } */
-
-    viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 2 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+    
     std::string penguin_mesh_path = "../../models3D/penguinEileen/bodyPingoinobj.obj";
     std::string penguin_texture_path = "../../models3D/penguinEileen/pinpoin.PNG";
-
-
     std::vector<std::vector<glm::vec3>> all_positions1;
     std::vector<std::vector<glm::vec3>> all_normals1;
     std::vector<std::vector<glm::vec2>> all_texcoords1;
@@ -157,11 +163,11 @@ void initialize_scene( Viewer& viewer )
     wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 0, 1))*getTranslationMatrix(glm::vec3(0, 0, 0.5)), 0.5);
     wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 0, 1))*getTranslationMatrix(glm::vec3(0, 0, 0.5)), 0.0);
     //unzoom
-    wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8)*getTranslationMatrix(0,0,-10), 10.0);
+    wingR->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5) * getTranslationMatrix(originParts[2])* getTranslationMatrix(0.5,0.9,-0.8), 10.0);
 
     penguin->addGlobalTransformKeyframe(getTranslationMatrix(0,0,0),0.0);
     penguin->addGlobalTransformKeyframe(getTranslationMatrix(0,0,0),3.0);
-    penguin->addGlobalTransformKeyframe(getTranslationMatrix(0,0,0)*getTranslationMatrix(0,0,-5),10.0);
+    penguin->addGlobalTransformKeyframe(getTranslationMatrix(0,0,0),10.0);
 
     viewer.addRenderable(wingR);
     viewer.addRenderable(penguin);
@@ -174,10 +180,8 @@ void initialize_scene( Viewer& viewer )
     // Add keyframes for lever animation
     leverB->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1), 0.0);
     leverB->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1), 3.0);
-    leverB->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1)*getTranslationMatrix(-10,0,0), 10.0);
+    leverB->addGlobalTransformKeyframe(getScaleMatrix(0.5,0.5,0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1), 10.0);
     viewer.addRenderable(leverB);
-    
-
 
     const std::string lever_path = "../../models3D/lever/leverLever.obj";
 
@@ -193,10 +197,42 @@ void initialize_scene( Viewer& viewer )
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0)), 1);
     lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0, 0, 1)*getRotationMatrix(M_PI * 0.15, glm::vec3(1, 0, 0)), 0.0);
     //unzoom
-    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1)*getTranslationMatrix(-10,0,0), 10.0);
-
-
+    lever->addGlobalTransformKeyframe(getScaleMatrix(0.5, 0.5, 0.5)*getRotationMatrix(-M_PI * 0.5, glm::vec3(0, 1, 0))*getTranslationMatrix(0,0,1), 10.0);
     viewer.addRenderable(lever);
+
+    // Rails
+    const std::string rail_path = "../../models3D/rail/rail.obj";
+    std::string rail_texture_path = "../../models3D/rail/woodAndMetal.jpg";
+    std::vector<std::vector<glm::vec3>> all_positions;
+    std::vector<std::vector<glm::vec3>> all_normals;
+    std::vector<std::vector<glm::vec2>> all_texcoords;
+    std::vector<MaterialPtr> materials;
+
+    read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions, all_normals, all_texcoords, materials);
+    
+
+    TexturedLightedMeshRenderablePtr railo = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+    railo->setLocalTransform(getScaleMatrix(1,1,1)*getTranslationMatrix(0,0,-3.6*2));
+    
+    for (int i = -1; i < 25; i++) {
+        TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+        rail->setLocalTransform(getScaleMatrix(1,1,1)*getTranslationMatrix(0,0,3.6*i));
+        HierarchicalRenderable::addChild(railo, rail);
+    }
+    railo->setGlobalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(M_PI*0.5, glm::vec3(0,1,0))*getTranslationMatrix(-1,0,-20));
+    viewer.addRenderable(railo);
+
+    //embranchement
+    TexturedLightedMeshRenderablePtr railo2 = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+
+    for (int i = 1; i < 25; i++) {
+        TexturedLightedMeshRenderablePtr rail = std::make_shared<TexturedLightedMeshRenderable>(texShader, rail_path, materials1[0], rail_texture_path);
+        rail->setLocalTransform(getScaleMatrix(1,1,1)*getTranslationMatrix(0,0,3.6*i));
+        HierarchicalRenderable::addChild(railo2, rail);
+    }
+
+    railo2->setGlobalTransform(getScaleMatrix(1,1,1)*getRotationMatrix(M_PI*0.65, glm::vec3(0,1,0))*getTranslationMatrix(-1.45,0,2.5));
+    viewer.addRenderable(railo2);
 
 
     //panneau
@@ -211,11 +247,23 @@ void initialize_scene( Viewer& viewer )
 
     HierarchicalRenderable::addChild(pannel, poto);
 
-    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,35),0.0);
-    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,35),3.0);
-    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.1,0.1,0.1)*getTranslationMatrix(0,0,-15),10.0);
-
+    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.3,0.3,0.3)*getTranslationMatrix(0,-1,20),0.0);
+    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.3,0.3,0.3)*getTranslationMatrix(0,-1,20),3.0);
+    pannel->addGlobalTransformKeyframe(getScaleMatrix(0.3,0.3,0.3)*getTranslationMatrix(0,-1,20),10.0);
     viewer.addRenderable(pannel);
+
+    HierarchicalRenderable::addChild(tcube, pannel);
+    HierarchicalRenderable::addChild(tcube, railo2);
+    HierarchicalRenderable::addChild(tcube, railo);
+    HierarchicalRenderable::addChild(tcube, lever);
+    HierarchicalRenderable::addChild(tcube, leverB);
+    HierarchicalRenderable::addChild(tcube, penguin);
+    HierarchicalRenderable::addChild(tcube, wingR);
+
+    tcube->addGlobalTransformKeyframe(getTranslationMatrix(0,0,0),0.0);
+    tcube->addGlobalTransformKeyframe(getTranslationMatrix(0,0,0),3.0);
+    tcube->addGlobalTransformKeyframe(getTranslationMatrix(0,0,-5),6.0);
+    tcube->addGlobalTransformKeyframe(getTranslationMatrix(0,0,-5),10.0);
 
 }
 
