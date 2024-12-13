@@ -1,27 +1,25 @@
 #include <Viewer.hpp>
 #include <ShaderProgram.hpp>
-#include <FrameRenderable.hpp>
-#include <Utils.hpp>
-#include <lighting/SpotLightRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
-#include <lighting/LightedMeshRenderable.hpp>
 #include <texturing/CubeMapRenderable.hpp>
 #include <Io.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
 #include <texturing/TexturedCubeRenderable.hpp>
+#include <lighting/SpotLightRenderable.hpp>
 
 void initialize_scene( Viewer& viewer )
 {
     // In this scene, we will see the train on rails going right in front of us, in our face
 
+    //Shaders
     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>(   "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
                                                                     "../../sfmlGraphicsPipeline/shaders/textureFragment.glsl");
-    viewer.addShaderProgram( texShader );
-
-	//Define a shader that encode an illumination model
+    viewer.addShaderProgram(texShader);
+    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+    viewer.addShaderProgram(cubeMapShader);
     ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>( "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl", 
                                                                     "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
-    viewer.addShaderProgram( phongShader );
+    viewer.addShaderProgram(phongShader);
     
 	glm::vec3 dir = glm::normalize(glm::vec3(-1,-1,-1));
     glm::vec3 ambient = glm::vec3(0,0,0);
@@ -43,20 +41,21 @@ void initialize_scene( Viewer& viewer )
     viewer.addDirectionalLight(light2);
     viewer.addDirectionalLight(light3);
 
-
-    ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-                                                                    "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
-    viewer.addShaderProgram(cubeMapShader);
+        glm::vec3 white(1,1,1);
+    { // SpotLight
+        auto spot_light = std::make_shared<SpotLight>(glm::vec3(0,4,-8), glm::vec3(0,4,-0.2), glm::vec3(0), white, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
+        viewer.addSpotLight(spot_light);
+        auto spot_light_renderable = std::make_shared<SpotLightRenderable>(phongShader, spot_light);
+        viewer.addRenderable(spot_light_renderable);
+    }
 
     std::string cubemap_dir = "../../models3D/ciel";
     auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
-
     viewer.addRenderable(cubemap);
 
 	//Rusty train
 	const std::string traing_path = "../../models3D/un_oldTrain.obj";
     const std::string train_texture_path = "../../models3D/metal.jpg";
-
 
     std::vector<std::vector<glm::vec3>> all_positions;
     std::vector<std::vector<glm::vec3>> all_normals;
@@ -71,17 +70,14 @@ void initialize_scene( Viewer& viewer )
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, 90)), 0.0); 
 	train->addGlobalTransformKeyframe(getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0)) * getTranslationMatrix(glm::vec3(0, 0, -0)), 4.0);
 
-
     // Rail
     const std::string rail_path = "../../models3D/rail/rail.obj";
     std::string rail_texture_path = "../../models3D/rail/woodAndMetal.jpg";
-
 
     std::vector<std::vector<glm::vec3>> all_positions1;
     std::vector<std::vector<glm::vec3>> all_normals1;
     std::vector<std::vector<glm::vec2>> all_texcoords1;
     std::vector<MaterialPtr> materials1;
-
 
     read_obj_with_materials(rail_path, "../../models3D/rail/", all_positions1, all_normals1, all_texcoords1, materials1);
     
@@ -96,16 +92,13 @@ void initialize_scene( Viewer& viewer )
     railo->setGlobalTransform(getScaleMatrix(1.6,1.6,1.6)*getTranslationMatrix(0,0,2));
     viewer.addRenderable(railo);
 
-
     auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, "../../models3D/sable.jpg");
     viewer.addRenderable(tcube);
     tcube->setGlobalTransform(getRotationMatrix(-M_PI * 0.15, glm::vec3(1, 0, 0))*getTranslationMatrix(0,-5,0)*getScaleMatrix(1000,1,1000));
-
 }
 
 int main() 
 {
-    //glm::vec4 background_color(0.0,0.0,0.0,1);
 	glm::vec4 background_color(0.8,0.8,0.8,1);
 	Viewer viewer(1280,720, background_color);
 	initialize_scene(viewer);
@@ -118,6 +111,5 @@ int main()
 		viewer.draw();
 		viewer.display();
 	}	
-
 	return EXIT_SUCCESS;
 }
